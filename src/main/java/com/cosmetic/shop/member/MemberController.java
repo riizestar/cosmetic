@@ -145,7 +145,7 @@ public class MemberController {
 	
 	//비밀번호 변경하기   <form><button type="submit" class="btn btn-primary">비밀번호 변경하기</button></form>
 	@PostMapping("/pwchange")
-	public String pwchange(@RequestParam("cur_pw") String mbsp_password, String new_pw, 
+	public String pwchange(@RequestParam("cur_pw") String m_password, String new_pw, 
 											HttpSession session, RedirectAttributes rttr) throws Exception {
 		
 		// RedirectAttributes rttr 기능?
@@ -158,18 +158,18 @@ public class MemberController {
 		String msg = "";
 		
 		// 암호화된 비밀번호.
-		String db_mbsp_password = ((MemberVO) session.getAttribute("login_auth")).getM_password();
-		String mbsp_id = ((MemberVO) session.getAttribute("login_auth")).getM_id();
-		String mbsp_email = ((MemberVO) session.getAttribute("login_auth")).getM_email();
+		String db_m_password = ((MemberVO) session.getAttribute("login_auth")).getM_password();
+		String m_id = ((MemberVO) session.getAttribute("login_auth")).getM_id();
+		String m_email = ((MemberVO) session.getAttribute("login_auth")).getM_email();
 		
 		// 현재 사용중인 비밀번호를 세션으로 저장되어있던 암호화된 비밀번호를 가져와서, 사용중인 비밀번호로 암호화가 된 것인지 여부를 판단.
-		if(passwordEncoder.matches(mbsp_password, db_mbsp_password)) {
+		if(passwordEncoder.matches(m_password, db_m_password)) {
 						
 			// 1)신규비밀번호를 암호화한다. 60바이트로 암호화
 			String encode_new_pw = passwordEncoder.encode(new_pw);
 			
 			// 2)암호화한 비밀번호를 변경한다.
-			memberService.pwchange(mbsp_id, encode_new_pw);
+			memberService.pwchange(m_id, encode_new_pw);
 			
 			url = "/"; // 메인페이지로 이동
 			msg = "success";
@@ -178,7 +178,7 @@ public class MemberController {
 			String type = "mail/pwchange";
 			
 			EmailDTO dto = new EmailDTO();
-			dto.setReceiverMail(mbsp_email); // 받는사람 메일주소
+			dto.setReceiverMail(m_email); // 받는사람 메일주소
 			dto.setSubject("Ezen Mall 비밀번호 변경알림을 보냅니다.");
 			
 			emailService.sendMail(type, dto, new_pw);
