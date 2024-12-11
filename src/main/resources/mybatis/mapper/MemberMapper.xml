@@ -35,6 +35,17 @@
 	
 	</select>
 	
+	<update id="pwchange" parameterType="Map">
+	
+		update 
+			mbsp_tbl 
+		set 
+			m_password = #{m_password}
+		where 
+			m_id  = #{m_id}
+		
+	</update>
+	
 	
 	
 	

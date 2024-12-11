@@ -23,5 +23,9 @@ public class MemberService {
 		return memberMapper.login(m_id);
 	}
 	
+	public void pwchange(String m_id, String m_password) {
+		memberMapper.pwchange(m_id, m_password);
+	}
+	
 	
 }
