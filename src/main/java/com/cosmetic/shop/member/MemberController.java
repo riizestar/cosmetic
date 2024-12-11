@@ -115,8 +115,54 @@ public class MemberController {
 		
 		return "redirect:"+ url;
 	}
+	
+	// 로그아웃
+	@GetMapping("/logout")
+	public String logout(HttpSession session) {
+		// session.setAttribute("login_auth", memberVO); 사용자를 인증처리하기위한 정보를 아래작업에서 소멸.
+		session.invalidate(); // 서버측의 세션으로 저장된 모든메모리가 소멸.
+		
+		return "redirect:/";
+	}
 		
 		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 		
 	
 }
