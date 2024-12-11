@@ -148,6 +148,8 @@ public class MemberController {
 	public String pwchange(@RequestParam("cur_pw") String m_password, String new_pw, 
 											HttpSession session, RedirectAttributes rttr) throws Exception {
 		
+		
+		
 		// RedirectAttributes rttr 기능?
 		/*
 		 1)주소를 리다이렉트 할때 파라미터를 이용하여, 쿼리스트링을 주소에 추가 할수가 있다.
