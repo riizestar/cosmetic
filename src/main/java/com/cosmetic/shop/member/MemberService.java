@@ -23,8 +23,12 @@ public class MemberService {
 		return memberMapper.login(m_id);
 	}
 	
-	public void pwchange(String m_id, String m_password) {
-		memberMapper.pwchange(m_id, m_password);
+	public void pwchange(String mbsp_id, String mbsp_password) {
+		memberMapper.pwchange(mbsp_id, mbsp_password);
+	}
+	
+	public String idsearch(String m_name, String m_email) {
+		return memberMapper.idsearch(m_name, m_email);
 	}
 	
 	

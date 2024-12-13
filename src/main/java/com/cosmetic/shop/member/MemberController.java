@@ -194,8 +194,46 @@ public class MemberController {
 		
 		return "redirect:" + url;
 	}
-		
 	
+	// 아이디및비밀번호 찾기 폼
+	@GetMapping("/lostpass")
+	public String lostpass() throws Exception {
+		
+		return "/member/lostpass";// 타임리프 파일명
+	}
+		
+	// 아이디찾기 - 메일발송
+	@GetMapping("/idsearch")
+	public ResponseEntity<String> idsearch(String m_name, String m_email) throws Exception {
+		
+		log.info("이름: " + m_name);
+		log.info("메일: " + m_email);
+		
+		ResponseEntity<String> entity = null;
+		
+		String result = "";
+		
+		String m_id = memberService.idsearch(m_name, m_email);
+		
+		if(m_id != null) {
+		
+			// 아이디 메일발송
+			String type = "mail/idsearch";
+			
+			EmailDTO dto = new EmailDTO();
+			dto.setReceiverMail(m_email); // 받는사람 메일주소
+			dto.setSubject("Ezen Mall 아이디 찾기결과를 보냅니다.");
+			
+			result = "success";
+			emailService.sendMail(type, dto, m_id);
+		}else {
+			result = "fail";
+		}
+		
+		entity = new ResponseEntity<String>(result, HttpStatus.OK);
+		
+		return entity;// lostpass.result으로 감
+	}
 	
 	
 	

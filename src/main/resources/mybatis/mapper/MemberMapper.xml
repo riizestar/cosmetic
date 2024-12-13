@@ -46,6 +46,17 @@
 		
 	</update>
 	
+	<select id="idsearch" parameterType="Map" resultType="String">
+		
+		select 
+			m_id 
+		from 
+			mbsp_tbl
+		where 
+			m_name = #{m_name} and m_email = #{m_email}
+		
+	</select>
+	
 	
 	
 	
