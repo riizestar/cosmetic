@@ -22,4 +22,21 @@ public interface MemberMapper {
 
 	// 임시비밀번호 발급하기위한 아이디와메일주소 존재여부체크
 	String pwtemp_confirm(@Param("m_id") String m_id, @Param("m_email") String m_email);
+	
+	// 회원수정 폼
+	MemberVO modify(String m_id);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

@@ -37,5 +37,9 @@ public class MemberService {
 		return memberMapper.pwtemp_confirm(m_id, m_email);
 	}
 	
+	public MemberVO modify(String m_id) {
+		return memberMapper.modify(m_id);
+	}
+	
 	
 }

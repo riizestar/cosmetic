@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -276,6 +277,21 @@ public class MemberController {
 		
 		return entity;
 		}
+	
+	//회원수정 폼.  select문 회원정보를 읽어오기.// 셀렉은 겟매핑
+	@GetMapping("/modify")
+	public void modify(HttpSession session, Model model) throws Exception {// 디비에 들어가면 throws Exception 하자
+		
+		log.info("modify 호출");
+		
+		// 로그인시 저장한 구문. session.setAttribute("login_auth", userInfo);
+		String m_id = ((MemberVO) session.getAttribute("login_auth")).getM_id();
+		MemberVO memberVO = memberService.modify(m_id);
+		
+		//log.info("회원수정정보" + memberVO);
+		
+		model.addAttribute("memberVO", memberVO);
+	}
 	
 	
 	
