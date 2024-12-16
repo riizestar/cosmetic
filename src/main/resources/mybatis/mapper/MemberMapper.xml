@@ -57,6 +57,17 @@
 		
 	</select>
 	
+	<select id="pwtemp_confirm" parameterType="Map" resultType="String">
+	
+		select 
+			m_email 
+		from 
+			mbsp_tbl
+		where 
+			m_id = #{m_id} and m_email = #{m_email}
+	
+	</select>
+	
 	
 	
 	

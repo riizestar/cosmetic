@@ -203,7 +203,7 @@ public class MemberController {
 	}
 		
 	// 아이디찾기 - 메일발송
-	@GetMapping("/idsearch")
+	@GetMapping("/idsearch")  // 홍길동  abc@abc.com
 	public ResponseEntity<String> idsearch(String m_name, String m_email) throws Exception {
 		
 		log.info("이름: " + m_name);
@@ -211,14 +211,14 @@ public class MemberController {
 		
 		ResponseEntity<String> entity = null;
 		
-		String result = "";
+		String result = "";// 빈문자열
 		
 		String m_id = memberService.idsearch(m_name, m_email);
 		
 		if(m_id != null) {
 		
 			// 아이디 메일발송
-			String type = "mail/idsearch";
+			String type = "mail/idsearch";//type: "mail/idsearch" idsearch.html
 			
 			EmailDTO dto = new EmailDTO();
 			dto.setReceiverMail(m_email); // 받는사람 메일주소
@@ -234,6 +234,48 @@ public class MemberController {
 		
 		return entity;// lostpass.result으로 감
 	}
+	
+	// 임시비밀번호 발급 - 메일발송
+	@GetMapping("/pwtemp")
+	public ResponseEntity<String> pwtemp(String m_id, String m_email) throws Exception {
+		
+		ResponseEntity<String> entity = null;
+		
+		String result = "";
+		
+		// 아이디와 전자우편이 존재하는 지 DB에서 체크
+		String d_u_email = memberService.pwtemp_confirm(m_id, m_email);
+		
+		if(d_u_email != null) {
+			result = "success";
+			
+			// createAuthCode()메서드가 emailService인터페이스의 추상메서드로 만든것이 아니라
+			// EmailServiceImpl클래의 메서드로 존재하기 때문에, EmailServiceImpl클래스로 형변화해서
+			// 호출해야 한다.(자바문법)
+			// 임시비밀번호 암호화하여, DB에 저장.
+			String imsi_pw = emailService.createAuthCode();
+			
+			// u_id, imsi_pw 암호화
+			memberService.pwchange(m_id,  passwordEncoder.encode(imsi_pw));
+			
+			
+			// 아이디 메일발송
+			String type = "mail/pwtemp";
+			
+			EmailDTO dto = new EmailDTO();
+			dto.setReceiverMail(d_u_email); // 받는사람 메일주소
+			dto.setSubject("Ezen Mall 임시비밀번호를 보냅니다.");
+
+			emailService.sendMail(type, dto, imsi_pw);
+			
+		}else {
+			result = "fail";
+		}
+		
+		entity = new ResponseEntity<String>(result, HttpStatus.OK);
+		
+		return entity;
+		}
 	
 	
 	

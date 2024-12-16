@@ -24,6 +24,7 @@ public class EmailService {
 	// String type : 메일발송 용도(인증코드, 회원가입축하, 주문내역정보 등등)
 	// type 매개변수에 타임리프 파일명이 제공
 	// String message : 용도는 메일내용
+	//  "mail/idsearch"
 	public void sendMail(String type, EmailDTO dto, String message) {
 		
 		// MimeMessage : 메일구성정보를 관리(받는사람, 보내는사람, 받는사람 메일주소, 본문내용)
@@ -42,10 +43,11 @@ public class EmailService {
 				mimeMessageHelper.setSubject(dto.getSubject());
 				
 				// 메일 본문내용.  true : 보내는 내용이 html tag가 존재할 경우 태그효과
+				// type: "mail/idsearch" idsearch.html
 				mimeMessageHelper.setText(setContext(message, type), true);
 				
 				// 메일발송기능
-				mailSender.send(mimeMessage);
+				mailSender.send(mimeMessage);//실직적으로 메일 발송됨
 		}catch(Exception ex) { // 메일발송시 에러발생되면, catch가 동작된다.
 			ex.printStackTrace();
 		}
@@ -70,8 +72,8 @@ public class EmailService {
 		return key.toString();
 	}
 	
-	
-	// 메일 템플릿사용(thymeleaf 사용)
+	// 아이디찾기기능이라면  idsearch.html 파일에 찾은 아이디와 내용을 결합하여 메일로 보내는 내용을 만들어준자. 
+	// 메일 템플릿사용(thymeleaf 사용).  user01   mail/idsearch
 	public String setContext(String message, String type) {
 		Context context = new Context();
 		
