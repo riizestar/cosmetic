@@ -79,6 +79,18 @@
 	
 	</select>
 	
+	<update id="modify_save" parameterType="com.cosmetic.shop.member.MemberVO">
+	
+		update 
+			mbsp_tbl
+		set
+			m_name = #{m_name}, m_email = #{m_email}, m_zipcode = #{m_zipcode}, m_addr = #{m_addr}, 
+			m_deaddr = #{m_deaddr}, m_phone = #{m_phone}, m_updatedate = now()
+		where 
+			m_id = #{m_id}
+	
+	</update>
+	
 	
 	
 	

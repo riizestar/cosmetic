@@ -26,6 +26,9 @@ public interface MemberMapper {
 	// 회원수정 폼
 	MemberVO modify(String m_id);
 	
+	// 회원수정
+	void modify_save(MemberVO vo);
+	
 	
 	
 	

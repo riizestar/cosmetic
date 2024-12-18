@@ -293,6 +293,15 @@ public class MemberController {
 		model.addAttribute("memberVO", memberVO);
 	}
 	
+	//회원수정하기
+	@PostMapping("/modify")
+	public String modify(MemberVO vo) throws Exception {
+		
+		memberService.modify_save(vo);
+		
+		return "redirect:/";
+	}
+	
 	
 	
 	

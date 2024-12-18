@@ -41,5 +41,9 @@ public class MemberService {
 		return memberMapper.modify(m_id);
 	}
 	
+	public void modify_save(MemberVO vo) {
+		memberMapper.modify_save(vo);
+	}
+	
 	
 }
