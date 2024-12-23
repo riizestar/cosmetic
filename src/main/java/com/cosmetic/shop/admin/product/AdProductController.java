@@ -122,6 +122,25 @@ public class AdProductController {
 		
 	}
 	
+	// 상품등록(저장).  <input type="file" name="pro_img_upload">
+	@PostMapping("/pro_insert")
+	public String pro_insert(ProductVO vo, MultipartFile pro_img_upload) throws Exception {
+		
+		//1)상품이미지 파일업로드작업
+		String dateFolder = fileUtils.getDateFolder(); // 상품이미지 업로드되는 날짜폴더이름
+		// 상품이미지 업로드및 실제사용한 업로드 파일명
+		String saveFileName = fileUtils.uploadFile(uploadPath, dateFolder, pro_img_upload);
+		
+		// 업로드한 날짜과 저장.   
+		vo.setPro_up_folder(dateFolder);
+		// 상품이미지명을 실제 업로드한 파일이름으로 저장
+		vo.setPro_img(saveFileName);
+		//2)상품정보 DB저장
+		adProductService.pro_insert(vo);
+		
+		return "redirect:/admin/product/pro_list";
+	}
+	
 	
 	
 	
