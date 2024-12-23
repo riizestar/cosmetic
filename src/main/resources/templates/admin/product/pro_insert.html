@@ -123,9 +123,10 @@
 				// 1차 카테고리 클릭이벤트 등록.  id="btn_firstCategory"
 				$("#btn_firstCategory").on("change", function() {
 					
-					let firstCategoryCode = $("#btn_firstCategory").val();
+					let firstCategoryCode = $("#btn_firstCategory").val();// 선택한 옵션태그 value값이 firstCategoryCode변수에 저장됨
 
 					// 2차카테고리 목록을 가져오는 스프링의 매핑주소
+					// /admin/category/secondcategory/1
 					let url = "/admin/category/secondcategory/" + firstCategoryCode;
 
 					$.getJSON(url, function(secondCategoryList) {
@@ -134,14 +135,15 @@
 
 						// 2차카테고리 select태그를 참조
 						let secondCategoryCode = $("#btn_secondCategory");
-
+						
+						// 자바스크립트에서는 문자열을 저장하는 용도로 사용하는 변수의 초기값은 ""(빈문자열로) 사용한다.
 						let optionStr = "";
 
 						for(let i=0; i<secondCategoryList.length; i++) {
 							optionStr += "<option value='" + secondCategoryList[i].cate_code + "'>" + secondCategoryList[i].cate_name + "</option>";
 						}
 
-						secondCategoryCode.find("option").remove();
+						secondCategoryCode.find("option").remove(); // 기존의 <option> 태그제거
 						secondCategoryCode.append("<option>2차카테고리 선택</option");
 						secondCategoryCode.append(optionStr);
 					});

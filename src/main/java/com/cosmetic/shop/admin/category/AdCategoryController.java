@@ -20,12 +20,12 @@ public class AdCategoryController {
 
 	private final AdCategoryService adCategoryService;
 	
-	// 1차카테고리를 부모로하는 2차카테고리 목록
+	// 1차카테고리를 부모로하는 2차카테고리 목록  
 	@GetMapping("/secondcategory/{cate_prt_code}") // 경로형태의 주소
 	public ResponseEntity<List<CategoryVO>> getSecondCategoryList(@PathVariable("cate_prt_code") Integer cate_prt_code) {
 		
 		log.info("1차카테고리코드:" + cate_prt_code);
-		
+		// 참조타입으로 변수를 만들때는 null 이라는 기본값을 사용한다.
 		ResponseEntity<List<CategoryVO>> entity = null;
 		
 		
