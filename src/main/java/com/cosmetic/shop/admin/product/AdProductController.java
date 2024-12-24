@@ -145,7 +145,7 @@ public class AdProductController {
 		return "redirect:/admin/product/pro_list";
 	}
 	
-	// 상품목록 - 테이블의 데이타를 출력(select문)
+		// 상품목록 - 테이블의 데이타를 출력(select문)
 		// 스프링부트 컨트롤러의 매핑주소로부터 호출되는 메서드의 파라미터가 참조타입이면,
 		// 스프링부트 시스템이 내부적으로 객체생성을 자동으로 생성해준다.
 		// cri객체가 가리키는 기억장소에 page=1, perPageNum=10, searchType=null, keyword=null 4개의 필드가 존재한다.
@@ -165,6 +165,13 @@ public class AdProductController {
 		model.addAttribute("pro_list", pro_list); // 타임리프 페이지서 사용이 가능
 		
 		
+		}
+		
+		// 상품목록 이미지출력하기.. 클라이언트에서 보낸 파라미터명 스프링의 컨트롤러에서 받는 파라미터명이 일치해야 한다.
+		@GetMapping("/image_display")
+		public ResponseEntity<byte[]> image_display(String dateFolderName, String fileName) throws Exception {
+			
+			return fileUtils.getFile(uploadPath + "\\" + dateFolderName, fileName);
 		}
 		
 		
