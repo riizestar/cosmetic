@@ -3,6 +3,7 @@ package com.cosmetic.shop.admin.product;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cosmetic.shop.admin.category.AdCategoryService;
+import com.cosmetic.shop.common.constants.Constants;
 import com.cosmetic.shop.common.utils.FileUtils;
+import com.cosmetic.shop.common.utils.PageMaker;
+import com.cosmetic.shop.common.utils.SearchCriteria;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -140,6 +144,30 @@ public class AdProductController {
 		
 		return "redirect:/admin/product/pro_list";
 	}
+	
+	// 상품목록 - 테이블의 데이타를 출력(select문)
+		// 스프링부트 컨트롤러의 매핑주소로부터 호출되는 메서드의 파라미터가 참조타입이면,
+		// 스프링부트 시스템이 내부적으로 객체생성을 자동으로 생성해준다.
+		// cri객체가 가리키는 기억장소에 page=1, perPageNum=10, searchType=null, keyword=null 4개의 필드가 존재한다.
+		@GetMapping("/pro_list") // SearchCriteria cri = new SearchCriteria()
+		public void pro_list(SearchCriteria cri, Model model) throws Exception {
+			
+		cri.setPerPageNum(Constants.ADMIN_PRODUCT_LIST_COUNT); // 페이지별 2건
+		
+		//1)상품목록
+		List<ProductVO> pro_list = adProductService.pro_list(cri);
+		
+		// 날짜폴더의 \를 /로 변환하는 작업
+		pro_list.forEach(vo -> {
+			vo.setPro_up_folder(vo.getPro_up_folder().replace("\\", "/"));	
+		});
+		
+		model.addAttribute("pro_list", pro_list); // 타임리프 페이지서 사용이 가능
+		
+		
+		}
+		
+		
 	
 	
 	

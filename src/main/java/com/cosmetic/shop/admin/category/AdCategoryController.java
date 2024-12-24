@@ -21,7 +21,7 @@ public class AdCategoryController {
 	private final AdCategoryService adCategoryService;
 	
 	// 1차카테고리를 부모로하는 2차카테고리 목록  
-	@GetMapping("/secondcategory/{cate_prt_code}") // 경로형태의 주소
+	@GetMapping("/secondcategory/{cate_prt_code}") // 경로형태의 주소   /admin/category/secondcategory/1
 	public ResponseEntity<List<CategoryVO>> getSecondCategoryList(@PathVariable("cate_prt_code") Integer cate_prt_code) {
 		
 		log.info("1차카테고리코드:" + cate_prt_code);

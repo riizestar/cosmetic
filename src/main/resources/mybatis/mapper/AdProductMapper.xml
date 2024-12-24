@@ -7,6 +7,45 @@
 			product_tbl(cate_code,pro_name,pro_price,pro_discount,pro_publisher,pro_content,pro_up_folder,pro_img,pro_amount,pro_buy) 
 		values(#{cate_code},#{pro_name},#{pro_price},#{pro_discount},#{pro_publisher},#{pro_content},#{pro_up_folder},#{pro_img},#{pro_amount},#{pro_buy})
 	</insert>
+	
+	<sql id="search">
+    <if test="searchType != null">
+   	<if test="searchType == 'n'.toString()">
+   		and pro_name like concat('%', #{keyword}, '%')
+   		<!-- concat : 여러 문자열을 합치는 함수 -->
+   		<!-- '%': SQL에서 %는 와일드카드로, 0개 이상의 임의의 문자를 의미
+   		          앞뒤에 %를 추가하여, 키워드가 pro_name의 어디에든 포함 -->
+   		<!-- #{keyword}는 MyBatis에서 매핑되는 파라미터로, 사용자가 입력한 검색어가 들어갑니다. -->
+   	</if>
+   	<if test="searchType == 'c'.toString()">
+   		and pro_num like concat('%', #{keyword}, '%')
+   	</if>
+   	<if test="searchType == 'p'.toString()">
+   		and pro_publisher like concat('%', #{keyword}, '%')
+   	</if>
+   	<if test="searchType == 'np'.toString()">
+   		and pro_name like concat('%', #{keyword}, '%') 
+   		 or
+   		pro_publisher like concat('%', #{keyword}, '%')
+   	</if>
+   	</if>
+ 	</sql>
+	
+	
+	<select id="pro_list" resultType="com.cosmetic.shop.admin.product.ProductVO">
+	
+		select 
+			pro_num,cate_code,pro_name,pro_price,pro_discount,pro_publisher,pro_content,pro_up_folder,pro_img,pro_amount,pro_buy,pro_date,pro_updatedate
+		from 
+			product_tbl
+		where
+			pro_num > 0
+			
+		<include refid="search"></include>
+			
+		limit #{pageStart}, #{perPageNum}	
+		
+	</select>
 
 
 
