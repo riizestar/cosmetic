@@ -46,6 +46,19 @@
 		limit #{pageStart}, #{perPageNum}	
 		
 	</select>
+	
+	<select id="getTotalCount" resultType="int">
+	
+		select
+			count(*)
+		from <!-- from 테이블명 뒤에는 and가 오면 안됨 -->
+			product_tbl
+		where 
+			pro_num > 0
+			
+		<include refid="search"></include>
+	
+	</select>
 
 
 

@@ -164,6 +164,21 @@ public class AdProductController {
 		
 		model.addAttribute("pro_list", pro_list); // 타임리프 페이지서 사용이 가능
 		
+		//2)페이징정보
+		PageMaker pageMaker = new PageMaker();
+		
+		pageMaker.setDisplayPageNum(Constants.ADMIN_PRODUCT_LIST_PAGESIZE);
+		
+		pageMaker.setCri(cri); // cri 기억장소에 page=1, perPageNum=10, searchType=null, keyword=null 4개의 필드
+		pageMaker.setTotalCount(adProductService.getTotalCount(cri));
+		
+		log.info("페이지정보" + pageMaker);
+		
+		model.addAttribute("pageMaker", pageMaker);
+		
+		// 1차카테고리 목록
+		model.addAttribute("cate_list", adCategoryService.getFirstCategoryList());
+		
 		
 		}
 		

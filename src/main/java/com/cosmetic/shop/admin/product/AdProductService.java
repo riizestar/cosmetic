@@ -22,6 +22,10 @@ public class AdProductService {
 		return adProductMapper.pro_list(cri);
 	}
 	
+	public int getTotalCount(SearchCriteria cri) {
+		return adProductMapper.getTotalCount(cri);
+	}
+	
 	
 	
 	

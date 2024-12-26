@@ -136,33 +136,47 @@
 						  </tbody>
 						</table>
 					</form>
-					
-					
+					<!-- 페이징및검색 파라미터 정보 : 현재 목록상태를 작업(수정,삭제)을 하고 돌아왔을 때 유지. -->
+					<form id="criteriaForm" action="" method="get">
+						<!-- 4개은 페이징,검색파라미터 -->
+						<input type="hidden" name="page" id="page" th:value="${pageMaker.cri.page}" />
+						<input type="hidden" name="perPageNum" id="perPageNum" th:value="${pageMaker.cri.perPageNum}" />
+						<input type="hidden" name="searchType" id="searchType" th:value="${pageMaker.cri.searchType}" />
+						<input type="hidden" name="keyword" id="keyword" th:value="${pageMaker.cri.keyword}" />
+
+						<!-- 수정상품코드 -->
+						<input type="hidden" name="pro_num" id="pro_num">
+					</form>
 				</div>
 				</div>	 
 			</div>
 
-
+					
 				 </div>
 			</div>
 		</div>
+		<div class="card-footer clearfix">
+						<nav aria-label="Page navigation example">
+							<ul class="pagination">
+							<!-- 이전표시여부 Previous  pageMaker.getPrev() -->
+							<th:block th:if="${pageMaker.prev}">
+								<li class="page-item"><a class="page-link" th:href="|/admin/product/pro_list${pageMaker.makeSearch(pageMaker.startPage - 1)}|">Previous</a></li>
+							</th:block>
+								<!--  페이지번호 출력.  1  2  3  4  5 -->
+								<th:block th:each="num : ${#numbers.sequence(pageMaker.startPage, pageMaker.endPage)}">
+								<li class="page-item" th:classappend="${pageMaker.cri.page == num ? 'active' : ''}">
+									<a class="page-link" th:href="|/admin/product/pro_list${pageMaker.makeSearch(num)}|" th:text="${num}"></a>
+								</li>        
+								</th:block>
+							
+							<!--  다음표시여부 Next -->
+							<th:block th:if="${pageMaker.next}">
+								<li class="page-item"><a class="page-link" th:href="|/admin/product/pro_list${pageMaker.makeSearch(pageMaker.endPage + 1)}|">Next</a></li>
+							</th:block>
+							</ul>
+						</nav>
+					</div>
 	  </div>
-	  <script>
-		// ckeditor 설정
-		var ckeditor_config = {
-	             resize_enabled : false,
-	             enterMode : CKEDITOR.ENTER_BR,
-	             shiftEnterMode : CKEDITOR.ENTER_P,
-	             toolbarCanCollapse : true,
-	             removePlugins : "elementspath", 
-	             //업로드 탭기능추가 속성. CKEditor에서 파일업로드해서 서버로 전송클릭하면 , 이 주소가 동작된다.
-	             filebrowserUploadUrl: '/admin/product/imageupload'
-	     }
-	
-		 // id="content" 인 textarea태그에 ckeditor_config변수가 가지고 있는 설정정보를 적용하겠다.
-		 CKEDITOR.replace("pro_content", ckeditor_config);
-
-	</script>
 	    
 	</th:block>
 
