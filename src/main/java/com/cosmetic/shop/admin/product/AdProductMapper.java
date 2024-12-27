@@ -15,6 +15,8 @@ public interface AdProductMapper {
 	
 	int getTotalCount(SearchCriteria cri);
 	
+	ProductVO pro_edit_form(Integer pro_num);
+	
 	
 	
 	

@@ -10,12 +10,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cosmetic.shop.admin.category.AdCategoryService;
+import com.cosmetic.shop.admin.category.CategoryVO;
 import com.cosmetic.shop.common.constants.Constants;
 import com.cosmetic.shop.common.utils.FileUtils;
 import com.cosmetic.shop.common.utils.PageMaker;
@@ -187,6 +189,42 @@ public class AdProductController {
 		public ResponseEntity<byte[]> image_display(String dateFolderName, String fileName) throws Exception {
 			
 			return fileUtils.getFile(uploadPath + "\\" + dateFolderName, fileName);
+		}
+		
+		// 상품수정 폼
+		// @ModelAttribute("cri") : 파라미터의 값을 타임리프페이지에서 사용하기위한 목적
+		@GetMapping("/pro_edit")
+		public void pro_edit(@ModelAttribute("cri") SearchCriteria cri, Integer pro_num, Model model) throws Exception {
+			
+			log.info("페이징및검색정보: " + cri);
+			log.info("상품코드: " + pro_num);
+			
+			// 1차카테고리 목록
+			// 1)1차카테고리 목록
+			model.addAttribute("cate_list", adCategoryService.getFirstCategoryList());
+			
+			// 2)상품정보.(2차카테고리 코드)
+			ProductVO productVO = adProductService.pro_edit_form(pro_num);
+			// 날짜폴더에 역슬래시가 클라이언트에서 서버로 보내질때 에러가 발생된다.
+			// 그래서, 미리 서버에서 클라이언트로 보낼때 역슬래시를 슬래시로 변환하여, 클라이언트에서 문제를 미연에 방지한다.
+			productVO.setPro_up_folder(productVO.getPro_up_folder().replace("\\", "/"));
+			model.addAttribute("productVO", productVO);
+			
+			// 상품정보의 있는 2차카테고리 코드.
+			int secondCategory = productVO.getCate_code();
+			
+			// 3) 2차카테고리의 부모인 1차카테고리 정보.(실제 상품에 해당하는 1차카테고리 정보)
+			CategoryVO categoryVO = adCategoryService.getFirstCategoryBySecondCategory(secondCategory);
+			model.addAttribute("categoryVO", categoryVO);
+			
+			/*** 1차카테고리 목록출력하고, 현재 상품의 1차카테고리코드 선택상태 */
+			
+			// 1차카테고리 코드
+			int firstCategory = categoryVO.getCate_prtcode();
+			
+			// 1차카테고리 코드를 부모로하는 2차카테고리 목록.
+			model.addAttribute("secondCategoryVO", adCategoryService.getSecondCategoryList(firstCategory));
+					
 		}
 		
 		

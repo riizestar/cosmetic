@@ -10,7 +10,7 @@ public interface AdCategoryMapper {
 	// 2차 카테고리목록
 	List<CategoryVO> getSecondCategoryList(Integer cate_prt_code);
 	
-	
+	CategoryVO getFirstCategoryBySecondCategory(int secondCategory);
 	
 
 }

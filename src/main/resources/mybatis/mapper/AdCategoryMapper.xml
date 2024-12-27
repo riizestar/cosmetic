@@ -22,8 +22,18 @@
 		where 
 			cate_prtcode = #{cate_prt_code}
 	
-	
 	</select>
+	
+	<select id="getFirstCategoryBySecondCategory" resultType="com.cosmetic.shop.admin.category.CategoryVO">
+ 
+ 	select 
+ 		cate_code, cate_prtcode, cate_name 
+ 	from 
+ 		category_tbl
+	where 
+		cate_code  = #{secondCategory}
+ 
+ 	</select>
 
 
 

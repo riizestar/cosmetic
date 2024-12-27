@@ -26,6 +26,9 @@ public class AdProductService {
 		return adProductMapper.getTotalCount(cri);
 	}
 	
+	public ProductVO pro_edit_form(Integer pro_num) {
+		return adProductMapper.pro_edit_form(pro_num);
+	}
 	
 	
 	
