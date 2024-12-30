@@ -17,7 +17,7 @@ public interface AdProductMapper {
 	
 	ProductVO pro_edit_form(Integer pro_num);
 	
-	
+	void pro_edit_ok(ProductVO vo);
 	
 	
 	

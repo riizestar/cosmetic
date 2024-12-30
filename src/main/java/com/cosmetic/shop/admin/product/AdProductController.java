@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cosmetic.shop.admin.category.AdCategoryService;
 import com.cosmetic.shop.admin.category.CategoryVO;
@@ -225,6 +226,39 @@ public class AdProductController {
 			// 1차카테고리 코드를 부모로하는 2차카테고리 목록.
 			model.addAttribute("secondCategoryVO", adCategoryService.getSecondCategoryList(firstCategory));
 					
+		}
+		
+		// 상품수정(변경)
+		@PostMapping("/pro_edit")
+		public String pro_edit(ProductVO vo, SearchCriteria cri, MultipartFile pro_img_upload, RedirectAttributes rttr) throws Exception {
+			
+			
+			// 1)상품이미지를 변경했을 경우
+			if(!pro_img_upload.isEmpty()) {
+				
+				// 기존이미지 삭제.
+				fileUtils.delete(uploadPath, "s_" + vo.getPro_up_folder(), vo.getPro_img(), "image");
+				
+				// 변경이미지 업로드.
+				String dateFolder = fileUtils.getDateFolder(); // 상품이미지 업로드되는 날짜폴더이름
+				String saveFileName = fileUtils.uploadFile(uploadPath, dateFolder, pro_img_upload);
+				
+				vo.setPro_up_folder(dateFolder);
+				vo.setPro_img(saveFileName);
+				
+			}
+			
+			// 상품테이블에 변경(db작업)
+			adProductService.pro_edit_ok(vo);
+			
+			// 원래상태의 목록으로 주소이동작업.
+			rttr.addAttribute("page", cri.getPage());
+			rttr.addAttribute("perPageNum", cri.getPerPageNum());
+			rttr.addAttribute("searchType", cri.getSearchType());
+			rttr.addAttribute("keyword", cri.getKeyword());
+			
+			// http://localhost:8888/admin/product/pro_edit?page=2&perPageNum=2&searchType=n&keyword=테스트&pro_num=13
+			return "redirect:/admin/product/pro_list";
 		}
 		
 		

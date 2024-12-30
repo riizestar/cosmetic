@@ -123,7 +123,7 @@
 							  	<img style="width: 100px;height: 100px;" th:src="${'/admin/product/image_display?dateFolderName=' + productVO.pro_up_folder + '&fileName=s_' + productVO.pro_img}">
 							  </td>
 							  <td>[[${#numbers.formatInteger(productVO.pro_price, 3, 'COMMA') + '원'}]]</td>
-							  <td>[[${productVO.pro_discount}]]</td>
+							  <td>[[${productVO.pro_amount}]]</td>
 							  <td>
 								[[${#dates.format(productVO.pro_date, 'yyyy-MM-dd HH:mm:ss')}]]
 							  </td>

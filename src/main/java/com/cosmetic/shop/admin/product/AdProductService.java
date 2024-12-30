@@ -30,6 +30,10 @@ public class AdProductService {
 		return adProductMapper.pro_edit_form(pro_num);
 	}
 	
+	public void pro_edit_ok(ProductVO vo) {
+		adProductMapper.pro_edit_ok(vo);
+	}
+	
 	
 	
 	
