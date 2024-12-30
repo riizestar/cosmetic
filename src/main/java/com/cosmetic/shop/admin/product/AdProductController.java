@@ -261,6 +261,24 @@ public class AdProductController {
 			return "redirect:/admin/product/pro_list";
 		}
 		
+		@GetMapping("/pro_delete")
+		public String pro_delete(SearchCriteria cri, Integer pro_num, RedirectAttributes rttr) throws Exception {
+			
+			// 상품삭제작업
+			adProductService.pro_delete(pro_num);
+			
+			// 원래상태의 목록으로 주소이동작업.
+			rttr.addAttribute("page", cri.getPage());
+			rttr.addAttribute("perPageNum", cri.getPerPageNum());
+			rttr.addAttribute("searchType", cri.getSearchType());
+			rttr.addAttribute("keyword", cri.getKeyword());
+			
+			
+			// RedirectAttributes rttr : 리다이렉트 되는 주소에 파라미터 작업목적으로 사용한다.
+			// http://localhost:8888/admin/product/pro_edit?page=2&perPageNum=2&searchType=n&keyword=테스트&pro_num=13
+			return "redirect:/admin/product/pro_list";
+		}
+		
 		
 	
 	

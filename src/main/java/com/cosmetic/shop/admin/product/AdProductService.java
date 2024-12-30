@@ -34,6 +34,10 @@ public class AdProductService {
 		adProductMapper.pro_edit_ok(vo);
 	}
 	
+	public void pro_delete(Integer pro_num) {
+		adProductMapper.pro_delete(pro_num);
+	}
+	
 	
 	
 	

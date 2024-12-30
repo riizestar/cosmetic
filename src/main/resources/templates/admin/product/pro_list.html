@@ -330,14 +330,16 @@
 				// 삭제버튼클릭.  name="btn_pro_del"
 				$("button[name='btn_pro_del']").on("click", function() {
 					
-					if(!confirm("삭제 하겠습니까?")) return;
+					if(!confirm("삭제 하겠습니까?")) return;// 리턴이 진행되면 프로그램 종료. 밑 코드는 실행이안됨
 
-					let pro_num = $(this).data("pro_num");
+					let pro_num = $(this).data("pro_num");// this = 내가 선택한 버튼테그 자신
 
 					// <form id="criteriaForm"> 사용
 					$("#pro_num").val(pro_num);
 
-					criteriaForm.attr("action", "/admin/product/pro_delete");
+					//criteriaForm.attr("method", "post");
+
+					criteriaForm.attr("action", "/admin/product/pro_delete");// 폼태그의 속성을 변경하거나 읽어올 때 사용하는 기능.  attr()
 					// 아래 구문을 주석을 걸고, 브라우저에서 criteriaForm 폼의 내용이 변경되는 것을 확인하고, 전송작업
 					criteriaForm.submit();
 				});

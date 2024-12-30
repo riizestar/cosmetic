@@ -83,6 +83,15 @@
 		pro_num = #{pro_num}
  
  	</update>
+ 	
+ 	<delete id="pro_delete" parameterType="Integer">
+ 
+ 	delete from 
+ 		product_tbl
+ 	where 
+		pro_num = #{pro_num}
+		
+ </delete>
 	
 
 
