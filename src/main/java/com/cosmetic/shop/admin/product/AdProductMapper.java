@@ -1,5 +1,6 @@
 package com.cosmetic.shop.admin.product;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.cosmetic.shop.common.utils.SearchCriteria;
@@ -20,6 +21,10 @@ public interface AdProductMapper {
 	void pro_edit_ok(ProductVO vo);
 	
 	void pro_delete(Integer pro_num);
+	
+	void pro_sel_delete_2(int[] pro_num_arr);
+	
+	void pro_sel_delete_3(HashMap<String, Object> map);// <키, 값>
 	
 	
 	

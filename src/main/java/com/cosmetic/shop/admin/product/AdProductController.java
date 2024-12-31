@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -261,23 +263,58 @@ public class AdProductController {
 			return "redirect:/admin/product/pro_list";
 		}
 		
-		@GetMapping("/pro_delete")
-		public String pro_delete(SearchCriteria cri, Integer pro_num, RedirectAttributes rttr) throws Exception {
+		// 선택한 상품삭제1(ajax용)
+		@PostMapping("/pro_sel_delete_1")
+		public ResponseEntity<String> pro_sel_delete_1(@RequestParam("pro_num_arr") int[] pro_num_arr) throws Exception {
+			ResponseEntity<String> entity = null;
 			
-			// 상품삭제작업
-			adProductService.pro_delete(pro_num);
+//			log.info("체크된 상품개수: " + pro_num_arr.length);
 			
-			// 원래상태의 목록으로 주소이동작업.
-			rttr.addAttribute("page", cri.getPage());
-			rttr.addAttribute("perPageNum", cri.getPerPageNum());
-			rttr.addAttribute("searchType", cri.getSearchType());
-			rttr.addAttribute("keyword", cri.getKeyword());
+			// 선택상품삭제 - 똑같은 기능을 하기 때문에 pro_sel_delete_2를 함께 공유해서 사용
+			adProductService.pro_sel_delete_2(pro_num_arr);
 			
+			// 선택 상품이미지 삭제
 			
-			// RedirectAttributes rttr : 리다이렉트 되는 주소에 파라미터 작업목적으로 사용한다.
-			// http://localhost:8888/admin/product/pro_edit?page=2&perPageNum=2&searchType=n&keyword=테스트&pro_num=13
+			entity = new ResponseEntity<String>("success", HttpStatus.OK);
+			
+			return entity;
+			
+		}
+		
+		
+		// 선택한 상품삭제2(form태그)
+		@PostMapping("/pro_sel_delete_2")
+		public String pro_sel_delete_2(int[] check, String[] pro_up_folder, String[] pro_img) throws Exception {
+			
+//			log.info("체크된 상품코드 개수 : " + check.length);
+			
+			// 선택상품삭제
+			adProductService.pro_sel_delete_2(check);
+			
+
+			// 선택상품이미지삭제.
+			for(int i=0; i < check.length; i++) {
+			
+				fileUtils.delete(uploadPath, pro_up_folder[i], pro_img[i], "image");
+			}
+			
 			return "redirect:/admin/product/pro_list";
 		}
+		
+		
+		// 선택상품3 
+		@PostMapping("/pro_sel_delete_3")
+		public String pro_sel_delete_3(int[] check, String pro_name) throws Exception {
+			
+//			log.info("체크된 상품코드 개수 : " + check.length);
+			
+			adProductService.pro_sel_delete_3(check, pro_name);
+			
+			return "redirect:/admin/product/pro_list";
+		}
+		
+		
+		
 		
 		
 	

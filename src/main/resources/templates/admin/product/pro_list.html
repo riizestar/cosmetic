@@ -176,7 +176,7 @@
 							</ul>
 						</nav>
 					</div>
-	  </div>
+				</div>
 	    
 	</th:block>
 
@@ -272,9 +272,9 @@
 					const pro_up_folder_arr = [];
 					const pro_img_arr = [];
 					
-					// 체크된 상품코드 확인
+					// 체크된 상품코드 확인.. 목록에서 체크된 체크박스 태그를 가리킨다.
 					$("input[name='check']:checked").each(function() {
-						pro_num_arr.push($(this).val());
+						pro_num_arr.push($(this).val());  // 선택된 체크박스의 값을 pro_num_arr 배열변수에 추가
 					});
 
 					//console.log("선택상품코드", pro_num_arr);
@@ -283,7 +283,7 @@
 					$.ajax({
 						url: '/admin/product/pro_sel_delete_1',
 						type: 'post',
-						data : {pro_num_arr : pro_num_arr},
+						data : {pro_num_arr : pro_num_arr},// 첫번째는 pro_num_arr 파라미터명으로 두번째 pro_num_arr 배열변수라는 기억장소의 값을 읽어와서 첫번째는 pro_num_arr 파라미터명으로 저장한다.
 						dataType: 'text',
 						success: function(result) {
 							if(result == 'success') {

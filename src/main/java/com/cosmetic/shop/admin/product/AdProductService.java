@@ -1,5 +1,6 @@
 package com.cosmetic.shop.admin.product;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -36,6 +37,20 @@ public class AdProductService {
 	
 	public void pro_delete(Integer pro_num) {
 		adProductMapper.pro_delete(pro_num);
+	}
+	
+	public void pro_sel_delete_2(int[] pro_num_arr) {
+		adProductMapper.pro_sel_delete_2(pro_num_arr);
+	}
+	
+	public void pro_sel_delete_3(int[] check, String pro_name) {
+		// 위의 2개의 파라미터를 Map으로 작업.
+		
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("pro_num_arr", check);// "pro_num_arr"를 사용하기 위해서 String
+		map.put("pro_name", pro_name);
+		
+		adProductMapper.pro_sel_delete_3(map);
 	}
 	
 	

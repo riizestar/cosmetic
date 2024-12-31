@@ -92,6 +92,39 @@
 		pro_num = #{pro_num}
 		
  </delete>
+ 
+ <!-- delete from product_tbl where pro_num in (1, 2, 3) -->
+ <delete id="pro_sel_delete_2">
+ 
+ 	delete from 
+ 			product_tbl
+ 		where 
+ 			pro_num in
+ 	
+ 	<foreach collection="pro_num_arr" item="item" open="("  separator="," close=")" >
+ 	<!-- foreach를 돌리기 위해서 맵사용 -->
+ 		#{item} <!-- pro_num_arr의 변수 item -->
+ 		
+ 	</foreach>
+ 
+ </delete>
+ 
+ <delete id="pro_sel_delete_3">
+ 
+ 	delete from 
+ 			product_tbl
+ 		where 
+ 			pro_name = #{pro_name}
+ 		and
+ 			pro_num in
+ 	
+ 	<foreach collection="pro_num_arr" item="item" open="("  separator="," close=")" >
+ 	
+ 		#{item}
+ 		
+ 	</foreach>
+ 
+ </delete>
 	
 
 
