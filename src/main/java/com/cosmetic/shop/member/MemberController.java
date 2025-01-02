@@ -24,8 +24,8 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class MemberController {
 	
-	private final EmailService emailService;
-	private final PasswordEncoder passwordEncoder;
+	private final EmailService emailService;// emailService - @RequiredArgsConstructor
+	private final PasswordEncoder passwordEncoder;// passwordEncoder - @RequiredArgsConstructor // 비밀번호를 암호화해서 저장하는 기능.
 	private final MemberService memberService;
 	
 	// 회원가입 폼
@@ -38,7 +38,7 @@ public class MemberController {
 	@GetMapping("/idCheck")
 	public ResponseEntity<String> idCheck(String m_id) throws Exception {
 					
-		ResponseEntity<String> entity = null;
+		ResponseEntity<String> entity = null;//  참조형은 기본값이 널값임
 					
 		String isUse = "";
 					
@@ -92,12 +92,12 @@ public class MemberController {
 		String url = "";
 		String status = "";
 		if(memberVO != null) { // 아이디가 존재  matches("사용자가 입력비밀번호", "db에서 가져온 암호된비밀번호")
-			// 사용자가 입력한 비밀번호가 db에서 가져온 암호화된 비밀번호를 만든것인지 확인
+			// 사용자가 입력한 비밀번호가 db에서 가져온 암호화된 비밀번호를 만든것인지 확인: matches
 			if(passwordEncoder.matches(dto.getM_password(), memberVO.getM_password())) { // 비번이 맞는의미
 				// 사용자를 인증처리하기위한 정보
 				// UserInfo클래스인 userInfo객체가 Object형으로 저장된다. 꺼내올 때는 원래의 형(UserInfo클래스)으로 형변환시켜야 한다.
-				session.setAttribute("login_auth", memberVO);
-				
+				session.setAttribute("login_auth", memberVO);// String name - , Object value - userInfo// "login_auth" 아이디가 필요하면 HttpSession session 만들어야한다
+				// 세션에 저장    / 아이디와 비번이 일치하면 userInfo정보를 login_auth이름으로 저장,관리함
 				url = "/";
 			}else { // 비번이 틀린의미.
 				status = "pwFail";
@@ -113,7 +113,7 @@ public class MemberController {
 		}
 		
 		// 이동되는 주소의 타임리프페이지에서 status 이름으로 사용할수가 있다. 페이지에서 자바스크립트 문법으로 사용
-		rttr.addFlashAttribute("status", status);
+		rttr.addFlashAttribute("status", status);// 타임리프파일에서 자바스크립트로 참조
 		
 		
 		return "redirect:"+ url;
@@ -135,7 +135,7 @@ public class MemberController {
 	// 마이페이지
 	@GetMapping("/mypage") 
 	public void mypage() throws Exception {
-		
+	//String u_pw는 유저인포에서 u_pw로 사용하는데 비번변경폼 /pwchange의 네임은 cur_pw여서 둘이 갖게해줘야 하기 때문에 @RequestParam("cur_pw")사용	
 	}
 	
 	//비밀번호 변경하기 폼
@@ -147,29 +147,30 @@ public class MemberController {
 	//비밀번호 변경하기   <form><button type="submit" class="btn btn-primary">비밀번호 변경하기</button></form>
 	@PostMapping("/pwchange")
 	public String pwchange(@RequestParam("cur_pw") String m_password, String new_pw, 
-											HttpSession session, RedirectAttributes rttr) throws Exception {
+			HttpSession session, RedirectAttributes rttr) throws Exception {
+		//String u_pw는 유저인포에서 u_pw로 사용하는데 비번변경폼 /pwchange의 네임은 cur_pw여서 둘이 갖게해줘야 하기 때문에 @RequestParam("cur_pw")사용
 		
 		
-		
-		// RedirectAttributes rttr 기능?
 		/*
-		 1)주소를 리다이렉트 할때 파라미터를 이용하여, 쿼리스트링을 주소에 추가 할수가 있다.
-		 2)리다이렉트 되는 주소의 타임리프 페이지에서 자바스크립트로 참조하고자 할 경우.  
-		 */
+		세션 형태로 저장해논거 갖고올 떄 HttpSession session
+		RedirectAttributes rttr 기능?
+		1) 주소를 리다이렉트 할 떄 파라미터값을 이용하여, 쿼리스트링을 주소에 추가 함
+		2) 리다이렉트 되는 주소의 타임리프 페이지에서 자바스크립트로 참조하고자 하는 경우
+		*/
 		
 		String url = "";
 		String msg = "";
 		
 		// 암호화된 비밀번호.
-		String db_m_password = ((MemberVO) session.getAttribute("login_auth")).getM_password();
-		String m_id = ((MemberVO) session.getAttribute("login_auth")).getM_id();
+		String db_m_password = ((MemberVO) session.getAttribute("login_auth")).getM_password();// "login_auth" // 오브젝으로 저장된거는 사용하기위하여 형변환시켜야함
+		String m_id = ((MemberVO) session.getAttribute("login_auth")).getM_id();// 비번바꾸면 아이디로 확인하니까
 		String m_email = ((MemberVO) session.getAttribute("login_auth")).getM_email();
 		
 		// 현재 사용중인 비밀번호를 세션으로 저장되어있던 암호화된 비밀번호를 가져와서, 사용중인 비밀번호로 암호화가 된 것인지 여부를 판단.
-		if(passwordEncoder.matches(m_password, db_m_password)) {
+		if(passwordEncoder.matches(m_password, db_m_password)) {// matches : charxequence - 스트링부모 암호된비번,
 						
 			// 1)신규비밀번호를 암호화한다. 60바이트로 암호화
-			String encode_new_pw = passwordEncoder.encode(new_pw);
+			String encode_new_pw = passwordEncoder.encode(new_pw);//암호화시켜서 저장
 			
 			// 2)암호화한 비밀번호를 변경한다.
 			memberService.pwchange(m_id, encode_new_pw);
@@ -191,7 +192,7 @@ public class MemberController {
 			msg = "fail";
 		}
 		
-		rttr.addFlashAttribute("msg", msg);
+		rttr.addFlashAttribute("msg", msg);// msg값을 "msg"이름으로 사용하겠다
 		
 		return "redirect:" + url;
 	}
@@ -257,7 +258,7 @@ public class MemberController {
 			String imsi_pw = emailService.createAuthCode();
 			
 			// u_id, imsi_pw 암호화
-			memberService.pwchange(m_id,  passwordEncoder.encode(imsi_pw));
+			memberService.pwchange(m_id,  passwordEncoder.encode(imsi_pw));// 암호화
 			
 			
 			// 아이디 메일발송
@@ -285,7 +286,7 @@ public class MemberController {
 		log.info("modify 호출");
 		
 		// 로그인시 저장한 구문. session.setAttribute("login_auth", userInfo);
-		String m_id = ((MemberVO) session.getAttribute("login_auth")).getM_id();
+		String m_id = ((MemberVO) session.getAttribute("login_auth")).getM_id();//형변환 시킴
 		MemberVO memberVO = memberService.modify(m_id);
 		
 		//log.info("회원수정정보" + memberVO);

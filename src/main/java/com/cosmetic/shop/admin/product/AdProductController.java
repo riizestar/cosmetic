@@ -263,6 +263,22 @@ public class AdProductController {
 			return "redirect:/admin/product/pro_list";
 		}
 		
+		@GetMapping("/pro_delete")
+		public String pro_delete(SearchCriteria cri, Integer pro_num, RedirectAttributes rttr) throws Exception {
+			
+			// 상품삭제작업
+			adProductService.pro_delete(pro_num);
+			
+			// 원래상태의 목록으로 주소이동작업.
+			rttr.addAttribute("page", cri.getPage());
+			rttr.addAttribute("perPageNum", cri.getPerPageNum());
+			rttr.addAttribute("searchType", cri.getSearchType());
+			rttr.addAttribute("keyword", cri.getKeyword());
+			
+			// http://localhost:8888/admin/product/pro_edit?page=2&perPageNum=2&searchType=n&keyword=테스트&pro_num=13
+			return "redirect:/admin/product/pro_list";
+		}
+		
 		// 선택한 상품삭제1(ajax용)
 		@PostMapping("/pro_sel_delete_1")
 		public ResponseEntity<String> pro_sel_delete_1(@RequestParam("pro_num_arr") int[] pro_num_arr) throws Exception {

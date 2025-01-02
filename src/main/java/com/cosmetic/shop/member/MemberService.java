@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class MemberService {
 	
-	private final MemberMapper memberMapper;// 
+	private final MemberMapper memberMapper;// 매퍼인터페이스를 참조하는객체를 사용하기 위해서
 	
 	public String idCheck(String m_id) {
 		return memberMapper.idCheck(m_id);
