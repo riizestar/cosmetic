@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
+
+<th:block layout:fragment="css">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+</th:block>    
+<th:block layout:fragment="script">
+  <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+  <script>
+    $( function() {
+      $( "#tabs" ).tabs();
+    } );
+    </script>
+</th:block>
+
+<th:block layout:fragment="content">
+	<div class="row">
+    <div class="col text-center mb-3 mt-3">
+      <h3 th:utext="${cate_name}"></h3>
+    </div>
+  </div>
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">        
+    <div class="col-6">
+      <img style="width: 100%;height: 225px;" th:src="${'/product/image_display?dateFolderName=' + productVO.pro_up_folder + '&fileName=' + productVO.pro_img}">
+    </div>
+    <div class="col-6">
+      <h5 th:text="${productVO.pro_name}"></h5>
+      <div class="mt-3">할인율 <span th:text="${productVO.pro_discount}"></span></div>
+      <div class="mt-3">판매가격 <span>[[${#numbers.formatInteger(productVO.pro_price, 3, 'COMMA') + '원'}]]</span></div>
+      <div class="mt-3">제조사 <span th:text="${productVO.pro_publisher}"></span></div>
+      <div class="mt-3">수량 <input type="number" value="1" id="cart_amount"></div>
+      <div class="d-flex justify-content-between align-items-center mt-5">
+        <div class="btn-group">
+          <button type="button" class="btn btn-outline-primary" id="btn_cart_add">Cart</button> 
+          <button type="button" class="btn btn-outline-primary" id="btn_buy_add">Buy</button>
+        </div>
+        <small class="text-body-secondary">상품후기 : [[${productVO.pro_review}]]</small>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-5">
+    <div id="tabs">
+      <ul>
+        <li><a href="#tabs-1">상세정보</a></li>
+        <li><a href="#tabs-2">리뷰</a></li>
+        <li><a href="#tabs-3">QnA</a></li>
+      </ul>
+      <div id="tabs-1">
+        <p>상세내용</p>
+        <p th:utext="${productVO.pro_content}"></p>
+      </div>
+      <div id="tabs-2">
+        <p>리뷰</p>
+      </div>
+      <div id="tabs-3">
+        <p>QnA</p>
+      </div>
+    </div>
+  </div>
+  <script>
+
+    $(document).ready(function() {
+
+      // 장바구니 클릭이벤트.  id="btn_cart_add"
+      $("#btn_cart_add").on("click", function() {
+        //console.log("장바구니 클릭");
+
+        $.ajax({
+          url: '/cart/cart_add',
+          type: 'post',
+          data: {pro_num: [[${productVO.pro_num}]], cart_amount : $("#cart_amount").val()},
+          dataType: 'text',
+          success: function(result) {
+            if(result == "success") {
+              alert("장바구니에 등록되었습니다.");
+              if(confirm("장바구니로 이동하시겠습니까?")) {
+                location.href = "/cart/cart_list";
+              }
+            }
+          }
+        });
+      });
+
+      // 구매 클릭이벤트.  id="btn_buy_add"  `` (string template) : 백틱안에 문자열과변수를 함께 사용할수 있는 문법
+      $("#btn_buy_add").on("click", function() {
+          let cart_amount = $("#cart_amount").val();
+          // 상품코드(pro_num), 수량(cart_amount)
+          let url = `/order/order_info?pro_num=[[${productVO.pro_num}]]&cart_amount=${cart_amount}&type=buy`;
+
+          //console.log("url", url);
+          location.href = url;
+      });
+
+    }); // ready event end
+
+  </script>
+</th:block>
+</html>

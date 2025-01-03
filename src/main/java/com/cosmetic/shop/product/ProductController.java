@@ -72,6 +72,30 @@ public class ProductController {
 		return fileUtils.getFile(uploadPath + "\\" + dateFolderName, fileName);
 	}
 	
+	// 상품상세정보
+	@GetMapping("/pro_info")
+	public void pro_info(@ModelAttribute("cate_name") String cate_name, Integer pro_num, Model model) throws Exception {
+		
+		log.info("카테고리명: " + cate_name);
+		
+		// 상품정보
+		ProductVO productVO = productService.pro_info(pro_num);
+		
+		
+		log.info("상품정보: " + productVO);
+		
+		// 이미지파일의 날짜폴더 \를 /로 변환하는 작업
+		productVO.setPro_up_folder(productVO.getPro_up_folder().replace("\\", "/"));
+		
+		model.addAttribute("productVO", productVO);
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

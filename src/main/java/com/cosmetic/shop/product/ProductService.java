@@ -24,6 +24,10 @@ public class ProductService {
 		return productMapper.getCountProductListBysecondCategory(second_cate_code);
 	}
 	
+	public ProductVO pro_info(Integer pro_num) {
+		return productMapper.pro_info(pro_num);
+	}
+	
 	
 	
 	

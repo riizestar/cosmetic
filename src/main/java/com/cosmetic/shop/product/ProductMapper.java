@@ -14,7 +14,7 @@ public interface ProductMapper {
 	
 	int getCountProductListBysecondCategory(@Param("cate_code") Integer second_cate_code);
 	
-	
+	ProductVO pro_info(Integer pro_num);
 	
 	
 	
