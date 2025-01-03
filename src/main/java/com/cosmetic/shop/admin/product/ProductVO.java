@@ -22,6 +22,7 @@ public class ProductVO {
 	private String pro_img; // 상품 이미지이름. 업로드된 파일에서 파일이름을 이용하여 저장.(유일한 이름)
 	private int pro_amount;
 	private String pro_buy;
+	private int pro_review;
 	private Date pro_date;
 	private Date pro_updatedate;
 }
