@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cosmetic.shop.cart.CartMapper">
+
+	<insert id="cart_add" parameterType="com.cosmetic.shop.cart.CartVO">
+	
+	insert into 
+		cart_tbl(pro_num,m_id,cart_amount)
+	values 
+		(#{pro_num} ,#{m_id} ,#{cart_amount}) 
+	on duplicate key 
+		update cart_amount = cart_amount + #{cart_amount} 
+	<!-- 중복 동일한 pro_num과 m_id가 이미 cart_tbl에 존재하면, cart_amount를 기존 값에 더하는 방식으로 수량을 증가. 
+	on duplicate key는 pro_num과 m_id가 복합키로 설정된 경우에 유효. 
+	두 값의 조합이 유니크해야만 중복된 키를 판단하고, 중복이 발생하면 업데이트가 수행.-->
+	</insert>
+
+
+
+
+
+
+
+
+
+
+
+</mapper>
