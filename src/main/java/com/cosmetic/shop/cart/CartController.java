@@ -67,7 +67,7 @@ public class CartController {
 		model.addAttribute("cart_list", cart_list);
 	
 		// 장바구니 비우기작업에서 총금액이 null로 발생됨. 타임리프에서 null 체크작업 필요
-		model.addAttribute("getCartTotalPriceByUserId", cartService.getCartTotalPriceByUserId(m_id));
+		model.addAttribute("cart_total_price", cartService.getCartTotalPriceByUserId(m_id));
 
 	}
 	
