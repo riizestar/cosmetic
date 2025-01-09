@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
+<th:block layout:fragment="content">
+	<div class="row">
+    <div class="col text-center mb-3 mt-3">
+      <h3>장바구니</h3>
+    </div>
+  </div>
+  <div class="row">        
+    <div class="col">
+      
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col" style="width: 15%;"><input type="checkbox" id="checkAll"></th>
+            <th scope="col" style="width: 25%;">상품이미지</th>
+            <th scope="col" style="width: 15%;">상품이름</th>
+            <th scope="col" style="width: 15%;">가격</th>
+            <th scope="col" style="width: 15%;">수량</th>
+            <th scope="col" style="width: 15%;">합계</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each= "item : ${cart_list}">
+            <td>
+              <input type="checkbox" name="check" th:value="${item['pro_num']}">
+            </td>
+            <td>
+              <img style="width: 100px;height: 100px;" th:src="${'/cart/image_display?dateFolderName=' + item.pro_up_folder + '&fileName=s_' + item.pro_img}">
+            </td>
+            <td th:text="${item['pro_name']}"></td>
+            <td th:text="${#numbers.formatInteger(item['pro_price'], 3, 'COMMA') + '원'}"></td>
+            <td>
+              <input type="number" name="btn_cart_amount" th:value="${item['cart_amount']}" style="width: 100px;">
+              <input type="hidden" name="pro_num" th:value="${item['pro_num']}">              
+            </td>
+            <td th:text="${#numbers.formatInteger(item['unitprice'], 3, 'COMMA') + '원'}"></td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="6"  th:if="${cart_total_price !=null}" th:text="'총금액' + ${#numbers.formatInteger(cart_total_price, 3, 'COMMA') + '원'}"></td>
+          </tr>
+        </tfoot>
+      </table>
+    </form>
+    </div>
+  </div>
+  
+
+  
+  
+</th:block>
+</html>

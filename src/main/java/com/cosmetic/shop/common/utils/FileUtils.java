@@ -18,8 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import net.coobird.thumbnailator.Thumbnails;
 
-
-
 // 파일 업로드와 관련된 작업.
 // 아래 일반클래스를 com.ezen.basic.service 패키지에서 관리하여 사용 할 수도 있고,
 // 아니면 아래처럼 @Component 어노테이션을 적용하여 사용 할수도 있다.

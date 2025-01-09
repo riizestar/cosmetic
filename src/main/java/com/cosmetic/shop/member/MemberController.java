@@ -28,7 +28,6 @@ public class MemberController {
 	private final PasswordEncoder passwordEncoder;// passwordEncoder - @RequiredArgsConstructor // 비밀번호를 암호화해서 저장하는 기능.
 	private final MemberService memberService;
 	
-	// 회원가입 폼
 	@GetMapping("/join")  //  /member/join.html
 	public void join() {
 				

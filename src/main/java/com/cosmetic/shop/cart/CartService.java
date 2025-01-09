@@ -1,5 +1,8 @@
 package com.cosmetic.shop.cart;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -11,6 +14,14 @@ public class CartService {
 	
 	public void cart_add(CartVO vo) {
 		cartMapper.cart_add(vo);
+	}
+	
+	public List<Map<String, Object>> cart_list(String m_id){
+		return cartMapper.cart_list(m_id);
+	}
+	
+	public Integer getCartTotalPriceByUserId(String m_id) {
+		return cartMapper.getCartTotalPriceByUserId(m_id);
 	}
 
 }
