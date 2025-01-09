@@ -48,7 +48,24 @@
     </form>
     </div>
   </div>
-  
+  <div class="row">
+    <div class="col-6">
+      <button type="button" class="btn btn-danger" id="btn_cart_empty">장바구니 비우기</button>
+    </div>
+  </div>
+
+
+  <script th:inline="javascript">
+
+    // 장바구니 비우기. id="btn_cart_empty"
+    $("button#btn_cart_empty").on("click",function(){
+      location.href = "/cart/cart_empty";
+    });
+
+
+
+
+  </script>
 
   
   

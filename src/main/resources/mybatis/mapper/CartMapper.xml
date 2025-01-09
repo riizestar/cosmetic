@@ -44,6 +44,15 @@
 			c.m_id = #{m_id}
 	
 	</select>
+	
+	<delete id="cart_empty">
+	
+	delete from 
+		cart_tbl 
+	where 
+		m_id = #{m_id}
+	
+	</delete>
 
 
 

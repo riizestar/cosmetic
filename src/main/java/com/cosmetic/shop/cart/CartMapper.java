@@ -11,7 +11,7 @@ public interface CartMapper {
 	
 	Integer getCartTotalPriceByUserId(String m_id);
 	
-	
+	void cart_empty(String m_id);
 	
 	
 	

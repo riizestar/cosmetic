@@ -23,5 +23,9 @@ public class CartService {
 	public Integer getCartTotalPriceByUserId(String m_id) {
 		return cartMapper.getCartTotalPriceByUserId(m_id);
 	}
+	
+	public void cart_empty(String m_id) {
+		cartMapper.cart_empty(m_id);
+	}
 
 }

@@ -77,6 +77,17 @@ public class CartController {
 		return fileUtils.getFile(uploadPath + "\\" + dateFolderName, fileName);
 	}
 	
+	@GetMapping("/cart_empty")
+	public String cart_empty(HttpSession session) throws Exception {
+		
+		String m_id = ((MemberVO)session.getAttribute("login_auth")).getM_id();
+		
+		cartService.cart_empty(m_id);
+		
+		return "redirect:/cart/cart_list";
+				
+	}
+	
 	
 	
 	
