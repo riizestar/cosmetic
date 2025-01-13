@@ -1,5 +1,6 @@
 package com.cosmetic.shop.cart;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +27,16 @@ public class CartService {
 	
 	public void cart_empty(String m_id) {
 		cartMapper.cart_empty(m_id);
+	}
+	
+	public void cart_sel_delete(int[] pro_num,String m_id) {
+		
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("pro_num_arr", pro_num);//("키",값) 선택된 상품코드
+		map.put("m_id", m_id);// 사용자 아이디
+		
+		cartMapper.cart_sel_delete(map);
+		
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.cosmetic.shop.cart;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +14,7 @@ public interface CartMapper {
 	
 	void cart_empty(String m_id);
 	
-	
+	void cart_sel_delete(HashMap<String, Object> map);
 	
 	
 	

@@ -53,7 +53,23 @@
 		m_id = #{m_id}
 	
 	</delete>
-
+	
+	<delete id="cart_sel_delete">
+	
+		delete from 
+			cart_tbl 
+		where 
+			pro_num in 
+		<foreach collection="pro_num_arr" item="item" open="(" separator="," close=")">
+			#{item} <!-- pro_num_arr의 변수 item -->
+		</foreach>
+		
+		and m_id = #{m_id}
+	</delete>
+	<!-- delete from cart_tbl where pro_num in (1,2) and m_id = 'user01'
+	 foreach문은 맵에서만 사용가능
+	item : 반복 중인 각 항목을 나타낼 변수 이름
+	 -->
 
 
 

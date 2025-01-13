@@ -10,7 +10,7 @@
   </div>
   <div class="row">        
     <div class="col">
-      
+      <form id="cartForm" method="post" action="/cart/cart_sel_delete">
       <table class="table">
         <thead>
           <tr>
@@ -53,6 +53,7 @@
   </div>
   <div class="row">
     <div class="col-6">
+      <button type="button" class="btn btn-secondary" id="btn_sel_delete">선택삭제</button>
       <button type="button" class="btn btn-danger" id="btn_cart_empty">장바구니 비우기</button>
     </div>
   </div>
@@ -60,17 +61,53 @@
 
   <script th:inline="javascript">
 
+    $(document).ready(function(){
+
+    
+
     // 장바구니 비우기. id="btn_cart_empty"
     $("button#btn_cart_empty").on("click",function(){
       location.href = "/cart/cart_empty";
     });
 
+    // 선택삭제 id="btn_sel_delete"
+    $("button#btn_sel_delete").on("click",function(){
 
+      if(!confirm("삭제하시겠습니까?")) return;
+      
+      let cartForm = $("#cartForm");
+      cartForm.submit();
+    });
+
+    $("#checkAll").on("click", function() {
+					// console.log("제목행 체크박스");
+					// this.checked : 제목행의 체크박스 상태
+					// 데이터행의 모든 체크박스 상태를 제목행의 체크상태로 적용
+					$("input[name='check']").prop("checked", this.checked);
+					isCheck = this.checked;					
+				});
+
+				// 데이터행 checkbox 클릭
+				$("input[name='check']").on("click", function() {
+					// 데이터행의 체크박스가 클릭이되면, 제목행 체크박스 상태를 데이타행의 체크박스 상태로 설정.
+					$("#checkAll").prop("checked", this.checked);
+
+					// 데이터행 checkbox가 모두 선택되어 있는 경우 제목행 체크박스 선택
+					//                    하나라도 선택되어 있지 않는 경우 제목행 체크박스 선택해제
+					$("input[name='check']").each(function() {
+						if(!$(this).is(":checked")) { // 데이터행이 체크가 안되어있는 경우 제목행 체크상태를 해제
+							$("#checkAll").prop("checked", false);
+						}
+					});
+				});
+
+
+    }); // ready event end
 
 
   </script>
 
   
-  
+    
 </th:block>
 </html>

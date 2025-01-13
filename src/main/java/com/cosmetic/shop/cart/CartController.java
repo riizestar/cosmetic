@@ -71,12 +71,14 @@ public class CartController {
 
 	}
 	
-	@GetMapping("/image_display")//이미지 출력
+	// 이미지 출력
+	@GetMapping("/image_display")
 	public ResponseEntity<byte[]> image_display(String dateFolderName, String fileName) throws Exception {
 		
 		return fileUtils.getFile(uploadPath + "\\" + dateFolderName, fileName);
 	}
 	
+	// 장바구니 비우기
 	@GetMapping("/cart_empty")
 	public String cart_empty(HttpSession session) throws Exception {
 		
@@ -88,6 +90,16 @@ public class CartController {
 				
 	}
 	
+	// 상품삭제하는 기능.  보여주는 기능은 @GetMapping을 사용해야하고 @ModelAttribute 이럴때 사용
+	@PostMapping("/cart_sel_delete")
+	public String cart_sel_delte(int[] check, HttpSession session) throws Exception {
+		
+		String m_id = ((MemberVO)session.getAttribute("login_auth")).getM_id();
+		
+		cartService.cart_sel_delete(check,m_id);
+		
+		return "redirect:/cart/cart_list";
+	}
 	
 	
 	
