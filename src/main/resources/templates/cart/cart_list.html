@@ -79,6 +79,24 @@
       cartForm.submit();
     });
 
+     // 수량변경하기.  name="btn_cart_amount"
+     $("input[name='btn_cart_amount']").on("change", function() { // name="btn_cart_amount"의 태그 값이 변경시 아래구문 실행
+
+    // 수량. primary key 값.
+    let cart_amount = $(this).val();//name="btn_cart_amount"의 인풋태그 변경 값
+    let pro_num = $(this).next("input[name='pro_num']").val();//name="btn_cart_amount"의 인풋태그 밑 next의 pro_num
+
+    // console.log("수량", cart_amount);
+    // console.log("상품코드", pro_num);
+
+    location.href = `/cart/cart_change?pro_num=${pro_num}&cart_amount=${cart_amount}`;
+
+});
+
+
+
+
+
     $("#checkAll").on("click", function() {
 					// console.log("제목행 체크박스");
 					// this.checked : 제목행의 체크박스 상태

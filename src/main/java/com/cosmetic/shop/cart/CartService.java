@@ -38,5 +38,9 @@ public class CartService {
 		cartMapper.cart_sel_delete(map);
 		
 	}
+	
+	public void cart_change(CartVO vo) {
+		cartMapper.cart_change(vo);
+	}
 
 }

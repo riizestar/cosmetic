@@ -68,8 +68,21 @@
 	</delete>
 	<!-- delete from cart_tbl where pro_num in (1,2) and m_id = 'user01'
 	 foreach문은 맵에서만 사용가능
-	item : 반복 중인 각 항목을 나타낼 변수 이름
-	 -->
+	item : 반복 중인 각 항목을 나타낼 변수 이름 -->
+	<update id="cart_change">
+	
+		update
+			 cart_tbl 
+		set 
+			cart_amount = #{cart_amount} 
+		where 
+			pro_num = #{pro_num} 
+		and 
+			m_id = #{m_id} 
+	
+	</update>
+	
+	 
 
 
 

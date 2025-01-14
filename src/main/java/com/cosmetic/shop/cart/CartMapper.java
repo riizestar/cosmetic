@@ -16,6 +16,8 @@ public interface CartMapper {
 	
 	void cart_sel_delete(HashMap<String, Object> map);
 	
+	void cart_change(CartVO vo);
+	
 	
 	
 	

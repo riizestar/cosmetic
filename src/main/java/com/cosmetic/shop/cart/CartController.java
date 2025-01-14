@@ -93,7 +93,8 @@ public class CartController {
 	// 상품삭제하는 기능.  보여주는 기능은 @GetMapping을 사용해야하고 @ModelAttribute 이럴때 사용
 	@PostMapping("/cart_sel_delete")
 	public String cart_sel_delte(int[] check, HttpSession session) throws Exception {
-		
+		// 배열인이유 : 같은 이름으로 name = check으로 넘어감 pro_num으
+		// name은 중복가능
 		String m_id = ((MemberVO)session.getAttribute("login_auth")).getM_id();
 		
 		cartService.cart_sel_delete(check,m_id);
@@ -101,6 +102,16 @@ public class CartController {
 		return "redirect:/cart/cart_list";
 	}
 	
+	@GetMapping("/cart_change")
+	public String cart_change(CartVO vo, HttpSession session) throws Exception{
+		
+		String m_id = ((MemberVO)session.getAttribute("login_auth")).getM_id();
+		vo.setM_id(m_id);
+		
+		cartService.cart_change(vo);
+		
+		return "redirect:/cart/cart_list";
+	}
 	
 	
 	
