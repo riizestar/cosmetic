@@ -82,6 +82,20 @@
 	
 	</update>
 	
+	<select id="getCartDetailsByUserId" resultType="HashMap">
+	
+ 		select 
+ 			p.pro_num ,p.pro_up_folder ,p.pro_img ,p.pro_name ,p.pro_price ,c.cart_amount 
+		from 
+			cart_tbl c
+		inner join 
+			product_tbl p
+		on 
+			c.pro_num = p.pro_num 
+		where 
+			c.m_id = #{m_id}
+	</select>
+	
 	 
 
 

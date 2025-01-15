@@ -42,5 +42,36 @@ public class CartService {
 	public void cart_change(CartVO vo) {
 		cartMapper.cart_change(vo);
 	}
+	
+	public List<Map<String, Object>> getCartDetailsByUserId(String m_id){
+		return cartMapper.getCartDetailsByUserId(m_id);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

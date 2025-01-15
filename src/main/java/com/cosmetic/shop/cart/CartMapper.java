@@ -18,6 +18,8 @@ public interface CartMapper {
 	
 	void cart_change(CartVO vo);
 	
+	List<Map<String, Object>> getCartDetailsByUserId(String m_id);
+	
 	
 	
 	

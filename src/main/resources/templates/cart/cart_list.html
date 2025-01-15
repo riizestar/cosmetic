@@ -57,6 +57,7 @@
       <button type="button" class="btn btn-danger" id="btn_cart_empty">장바구니 비우기</button>
     </div>
     <div class="col-6">
+      <button type="button" class="btn btn-success" id="btn_order_info">주문하기</button>
       <button type="button" class="btn btn-success" id="btn_shopping">쇼핑하기</button>
     </div>
   </div>
@@ -100,6 +101,11 @@
     $("button#btn_shopping").on("click", function() {
       location.href = "/";
     })
+
+    // 주문하기 id="btn_order_info"
+    $("button#btn_order_info").on("click",function(){
+      location.href = "/order/order_info?type=cart";
+    });
 
 
     $("#checkAll").on("click", function() {
