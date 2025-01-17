@@ -56,6 +56,7 @@
             <div class="form-group row mb-3">
                 <label for="m_name" class="col-sm-2 col-form-label">이름</label>
                 <div class="col-sm-4">
+                  <!-- 새로운 주소일 때 공백으로 변경하기 위해 숨김 -->
                     <input type="hidden" id="ord_addr_zipcode_2" th:value="${memberVO.m_zipcode}">
                     <input type="hidden" id="ord_addr_basic_2" th:value="${memberVO.m_addr}">
                     <input type="hidden" id="ord_addr_detail_2" th:value="${memberVO.m_deaddr}">

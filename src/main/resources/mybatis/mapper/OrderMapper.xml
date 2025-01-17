@@ -2,6 +2,43 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cosmetic.shop.order.OrderMapper">
 
+	<insert id="order_insert" useGeneratedKeys="true" keyProperty="ord_code">
+	
+		insert into
+			order_tbl(m_id ,ord_name ,ord_addr_zipcode ,ord_addr_basic ,ord_addr_detail ,ord_tel ,ord_price)
+		values
+			(#{m_id},#{ord_name},#{ord_addr_zipcode},#{ord_addr_basic},#{ord_addr_detail},#{ord_tel},#{ord_price})
+	
+	</insert>
+	<!-- useGeneratedKeys="true" : auto_increment 자동 증가 값를 반환받겠다
+	keyProperty="ord_code": 생성된 키 값이 OrderVO 객체의 ord_code 속성에 할당
+	ord_code는 없다가 주문하기 인서트하면 자동으로 생김 -->
+
+	<select id="order_detail_insert" parameterType="map">
+	
+		insert into 
+			ordetail_tbl 
+		select 
+			#{ord_code}, c.pro_num ,c.cart_amount ,p.pro_price 
+		from 
+			cart_tbl c
+		inner join 
+			product_tbl p
+		on 
+			c.pro_num = p.pro_num 
+		where 
+			c.m_id = #{m_id};
+	
+	</select>
+	<!-- 
+	"map" : 파라미터를 전달할 때
+	"HashMap" : 쿼리 결과를 받을 때.
+				쿼리에서 반환된 여러 컬럼을 키-값 쌍으로 반환하기 위해 사용-->
+
+
+
+
+
 
 
 

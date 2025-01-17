@@ -8,7 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cosmetic.shop.cart.CartService;
 import com.cosmetic.shop.cart.CartVO;
@@ -80,10 +82,6 @@ public class OrderController {
 		model.addAttribute("item_name", item_name);
 		model.addAttribute("quantity", cartDetails.size());
 		
-		
-		
-		
-		
 	}
 	
 	// 상품목록 이미지출력하기.. 클라이언트에서 보낸 파라미터명 스프링의 컨트롤러에서 받는 파라미터명이 일치해야 한다.
@@ -93,6 +91,22 @@ public class OrderController {
 		return fileUtils.getFile(uploadPath + "\\" + dateFolderName, fileName);
 	}
 	
+	// 계좌이체인 경우만 실행.  카카오페이는 사용안함.
+	@PostMapping("/order_save")
+	public String order_save(OrderVO vo, HttpSession session, String p_method,
+			String account_transfer,String sender, RedirectAttributes rttr) throws Exception {
+		
+		String m_id = ((MemberVO) session.getAttribute("login_auth")).getM_id();
+		vo.setM_id(m_id);
+		
+		// 계좌이체/국민은행/홍길동
+		String p_method_info = p_method + "/" + account_transfer + "/" + sender;
+		
+		orderService.order_process(vo, m_id, p_method_info);
+		
+		return "";
+		
+	}
 	
 	
 	

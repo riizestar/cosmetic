@@ -18,6 +18,7 @@ public class OrderVO {
 	private String ord_addr_basic;
 	private String ord_addr_detail;
 	private String ord_tel;
+	private String ord_mail;
 	private int ord_price;
 	private String ord_status;
 	private LocalDateTime ord_regdate;
