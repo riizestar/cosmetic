@@ -3,6 +3,7 @@ package com.cosmetic.shop.order;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cosmetic.shop.payment.PaymentMapper;
 import com.cosmetic.shop.payment.PaymentVO;
 
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 public class OrderService {
 	
 	public final OrderMapper orderMapper;
+	public final PaymentMapper paymentMapper;
 	
 	// 주문하기.(주문테이블, 주문상세테이블(주문번호), 결제테이블(주문번호), 배송테이블(주문번호),장바구니테이블)
 	@Transactional
@@ -30,9 +32,32 @@ public class OrderService {
 		// 이 작업을 통해 주문 후 상품 정보를 확인하거나, 배송, 결제 등과 관련된 후속 처리를 할 수 있게 됨.
 		orderMapper.order_detail_insert(vo.getOrd_code(),m_id);
 		
+		// 3)결제테이블
+		PaymentVO p_vo = new PaymentVO();
+		p_vo.setOrd_code(vo.getOrd_code());
+		p_vo.setM_id(m_id);
+		
+		p_vo.setPayment_method(p_method); // "계좌이체"
+		p_vo.setPayment_price(vo.getOrd_price());// 총 구매금액
+		
+		if(p_method.equals("카카오페이")) {
+			p_vo.setPayment_status("입금완료");
+		}else if(p_method.contains("계좌이체")) {
+			p_vo.setPayment_status("입금미납");
+		}
+		
+		paymentMapper.payment_insert(p_vo);
+		
+		
+		
 		
 		
 	}
+	
+	
+	
+	
+	
 	
 	
 	
