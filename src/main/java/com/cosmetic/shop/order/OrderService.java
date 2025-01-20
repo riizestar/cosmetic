@@ -3,6 +3,10 @@ package com.cosmetic.shop.order;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cosmetic.shop.cart.CartMapper;
+import com.cosmetic.shop.cart.CartService;
+import com.cosmetic.shop.delivery.DeliveryMapper;
+import com.cosmetic.shop.delivery.DeliveryVO;
 import com.cosmetic.shop.payment.PaymentMapper;
 import com.cosmetic.shop.payment.PaymentVO;
 
@@ -15,6 +19,8 @@ public class OrderService {
 	
 	public final OrderMapper orderMapper;
 	public final PaymentMapper paymentMapper;
+	public final CartMapper cartMapper;
+	public final DeliveryMapper deliveryMapper;
 	
 	// 주문하기.(주문테이블, 주문상세테이블(주문번호), 결제테이블(주문번호), 배송테이블(주문번호),장바구니테이블)
 	@Transactional
@@ -48,7 +54,20 @@ public class OrderService {
 		
 		paymentMapper.payment_insert(p_vo);
 		
+		// 4)장바구니 테이블
+		cartMapper.cart_empty(m_id);// 결제하고 나면 장바구니 테이블 비움
 		
+		// 5)배송테이블
+		DeliveryVO deliveryVO = new DeliveryVO();
+		deliveryVO.setOrd_code(vo.getOrd_code());
+		deliveryVO.setShipping_zipcode(vo.getOrd_addr_zipcode());
+		deliveryVO.setShipping_addr(vo.getOrd_addr_basic());
+		deliveryVO.setShipping_deaddr(vo.getOrd_addr_detail());
+		
+		deliveryMapper.delivery_insert(deliveryVO);
+		
+		
+				
 		
 		
 		

@@ -5,7 +5,7 @@
 	<insert id="order_insert" useGeneratedKeys="true" keyProperty="ord_code">
 	
 		insert into
-			order_tbl(m_id ,ord_name ,ord_addr_zipcode ,ord_addr_basic ,ord_addr_detail ,ord_tel ,ord_price)
+			order_tbl(m_id ,ord_name ,ord_addr_zipcode ,ord_addr_basic ,ord_addr_detail ,ord_tel ,ord_mail,ord_price)
 		values
 			(#{m_id},#{ord_name},#{ord_addr_zipcode},#{ord_addr_basic},#{ord_addr_detail},#{ord_tel},#{ord_price})
 	
