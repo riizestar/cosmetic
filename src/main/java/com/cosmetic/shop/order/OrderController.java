@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.cosmetic.shop.cart.CartService;
 import com.cosmetic.shop.cart.CartVO;
 import com.cosmetic.shop.common.utils.FileUtils;
+import com.cosmetic.shop.common.utils.SearchCriteria;
 import com.cosmetic.shop.mail.EmailDTO;
 import com.cosmetic.shop.mail.EmailService;
 import com.cosmetic.shop.member.MemberService;
@@ -163,6 +164,30 @@ public class OrderController {
 		model.addAttribute("order_info", order_info);
 		model.addAttribute("order_total_price", order_total_price);
 	}
+	
+	// order_list : 주문목록  review_manage: 주문목록중 배송완료 대상
+	@GetMapping(value = {"/order_list"})
+	public void order_list(SearchCriteria cri, HttpSession session, Model model) throws Exception {
+		
+		String m_id = ((MemberVO) session.getAttribute("login_auth")).getM_id();
+		
+		cri.setPerPageNum(5);
+		
+		List<Map<String, Object>> order_list = orderService.getOrderInfoByUser_id(m_id, cri);
+		
+		// 날짜폴더의 역슬래쉬 \ 를 / 로 변환작업
+		order_list.forEach(o_Info -> {
+			o_Info.put("pro_up_folder", o_Info.get("pro_up_folder").toString().replace("\\", "/"));			
+		});
+		
+		model.addAttribute("order_list", order_list);
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 	

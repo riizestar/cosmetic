@@ -3,10 +3,12 @@ package com.cosmetic.shop.order;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cosmetic.shop.cart.CartMapper;
+import com.cosmetic.shop.common.utils.SearchCriteria;
 import com.cosmetic.shop.delivery.DeliveryMapper;
 import com.cosmetic.shop.delivery.DeliveryVO;
 import com.cosmetic.shop.payment.PaymentMapper;
@@ -73,6 +75,10 @@ public class OrderService {
 	// 실시간 결제에 따른 주문상세내역에 주문내역
 	public List<Map<String, Object>> getOrdInfoByOrd_code(Integer ord_code){
 		return orderMapper.getOrdInfoByOrd_code(ord_code);
+	}
+	
+	public List<Map<String, Object>> getOrderInfoByUser_id(String m_id, SearchCriteria cri){
+		return orderMapper.getOrderInfoByUser_id(m_id, cri);
 	}
 	
 	

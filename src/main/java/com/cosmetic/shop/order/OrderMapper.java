@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.cosmetic.shop.common.utils.SearchCriteria;
+
 public interface OrderMapper {
 
 	// OrderVO안에는 ord_code가 null인 상태이지만, mapper파일에서 insert문이 작동되면 auto_increment의 기능에 의하여 일련번호가
@@ -15,6 +17,8 @@ public interface OrderMapper {
 	void order_detail_insert(@Param("ord_code") Integer ord_code,@Param("m_id") String m_id);
 	
 	List<Map<String, Object>> getOrdInfoByOrd_code(Integer ord_code);
+	
+	List<Map<String, Object>> getOrderInfoByUser_id(@Param("m_id") String m_id,@Param("cri") SearchCriteria cri);
 	
 	
 	
