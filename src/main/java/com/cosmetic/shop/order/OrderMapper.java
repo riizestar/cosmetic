@@ -20,7 +20,7 @@ public interface OrderMapper {
 	
 	List<Map<String, Object>> getOrderInfoByUser_id(@Param("m_id") String m_id,@Param("cri") SearchCriteria cri);
 	
-	
+	int getOrderCountByUser_id(String m_id);
 	
 	
 	

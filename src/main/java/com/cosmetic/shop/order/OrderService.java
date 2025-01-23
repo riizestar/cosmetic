@@ -81,7 +81,9 @@ public class OrderService {
 		return orderMapper.getOrderInfoByUser_id(m_id, cri);
 	}
 	
-	
+	public int getOrderCountByUser_id(String m_id) {
+		return orderMapper.getOrderCountByUser_id(m_id);
+	}
 	
 	
 	

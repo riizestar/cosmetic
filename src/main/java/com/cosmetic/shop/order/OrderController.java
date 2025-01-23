@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.cosmetic.shop.cart.CartService;
 import com.cosmetic.shop.cart.CartVO;
 import com.cosmetic.shop.common.utils.FileUtils;
+import com.cosmetic.shop.common.utils.PageMaker;
 import com.cosmetic.shop.common.utils.SearchCriteria;
 import com.cosmetic.shop.mail.EmailDTO;
 import com.cosmetic.shop.mail.EmailService;
@@ -181,6 +182,14 @@ public class OrderController {
 		});
 		
 		model.addAttribute("order_list", order_list);
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(orderService.getOrderCountByUser_id(m_id));
+		
+		model.addAttribute("pageMaker", pageMaker);
+		
+				
 	}
 	
 	

@@ -80,8 +80,30 @@
 		limit 
 			#{cri.pageStart}, #{cri.perPageNum}
 	
-	
 	</select>		
+	
+	<select id="getOrderCountByUser_id" resultType="int">
+	
+		select 
+			count(*)
+		from 
+			order_tbl o 
+		inner join 
+			ordetail_tbl odt 
+		on 
+			o.ord_code = odt.ord_code 
+		inner join 
+			product_tbl pt 
+		on 
+			odt.pro_num  = pt.pro_num 
+		inner join 
+			payment_tbl payt
+		on 
+			odt.ord_code = payt.ord_code
+		where 
+			o.m_id = #{m_id}
+	
+	</select>
 
 
 
