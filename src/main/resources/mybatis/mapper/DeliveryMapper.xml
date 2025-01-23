@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cosmetic.shop.delivery.DeliveryMapper">
 
-	<insert id="delivery_insert">
+	<insert id="delivery_insert" parameterType="com.cosmetic.shop.delivery.DeliveryMapper">
 	
 		insert into 
 			delivery_tbl (ord_code,shipping_zipcode,shipping_addr,shipping_deaddr)

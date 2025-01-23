@@ -4,11 +4,12 @@
 
 	<insert id="order_insert" useGeneratedKeys="true" keyProperty="ord_code">
 	
-		insert into
-			order_tbl(m_id ,ord_name ,ord_addr_zipcode ,ord_addr_basic ,ord_addr_detail ,ord_tel ,ord_mail,ord_price)
-		values
-			(#{m_id},#{ord_name},#{ord_addr_zipcode},#{ord_addr_basic},#{ord_addr_detail},#{ord_tel},#{ord_price})
-	
+		insert into 
+			order_tbl
+				(m_id, ord_name, ord_addr_zipcode, ord_addr_basic, ord_addr_detail, ord_tel, ord_mail, ord_price)
+			values
+				(#{m_id}, #{ord_name}, #{ord_addr_zipcode}, #{ord_addr_basic}, #{ord_addr_detail}, #{ord_tel}, #{ord_mail}, #{ord_price})
+				
 	</insert>
 	<!-- useGeneratedKeys="true" : auto_increment 자동 증가 값를 반환받겠다
 	keyProperty="ord_code": 생성된 키 값이 OrderVO 객체의 ord_code 속성에 할당
@@ -34,6 +35,25 @@
 	"map" : 파라미터를 전달할 때
 	"HashMap" : 쿼리 결과를 받을 때.
 				쿼리에서 반환된 여러 컬럼을 키-값 쌍으로 반환하기 위해 사용-->
+				
+	<select id="getOrdInfoByOrd_code" resultType="HashMap">
+	
+		select 
+			ot.ord_code ,pt.pro_up_folder ,pt.pro_img ,pt.pro_name ,ot.dt_amount ,ot.dt_price ,pt2.payment_status 
+		from 
+			ordetail_tbl ot 
+		inner join 
+			product_tbl pt 
+		on 
+			ot.pro_num = pt.pro_num 
+		inner join 
+			payment_tbl pt2 
+		on 
+			pt2.ord_code = ot.ord_code 
+		where 
+			ot.ord_code = #{ord_code}
+	
+	</select>			
 
 
 

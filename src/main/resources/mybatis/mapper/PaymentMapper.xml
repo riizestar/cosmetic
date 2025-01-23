@@ -6,7 +6,7 @@
 		insert into 
 			payment_tbl (ord_code, m_id,payment_method, payment_price,payment_status)
 		values
-			#({ord_code},#{m_id},#{payment_method},#{payment_price},#{payment_status})
+			(#{ord_code},#{m_id},#{payment_method},#{payment_price},#{payment_status})
 	
 	</insert>
 

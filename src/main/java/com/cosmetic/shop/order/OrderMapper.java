@@ -1,5 +1,8 @@
 package com.cosmetic.shop.order;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface OrderMapper {
@@ -10,6 +13,8 @@ public interface OrderMapper {
 	void order_insert(OrderVO vo);
 	
 	void order_detail_insert(@Param("ord_code") Integer ord_code,@Param("m_id") String m_id);
+	
+	List<Map<String, Object>> getOrdInfoByOrd_code(Integer ord_code);
 	
 	
 	

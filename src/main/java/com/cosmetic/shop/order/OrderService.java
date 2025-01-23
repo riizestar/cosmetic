@@ -1,10 +1,12 @@
 package com.cosmetic.shop.order;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cosmetic.shop.cart.CartMapper;
-import com.cosmetic.shop.cart.CartService;
 import com.cosmetic.shop.delivery.DeliveryMapper;
 import com.cosmetic.shop.delivery.DeliveryVO;
 import com.cosmetic.shop.payment.PaymentMapper;
@@ -34,7 +36,7 @@ public class OrderService {
 		log.info("주문번호: " + vo.getOrd_code()); // 주문번호 출력
 		
 		// 2)주문상세테이블(데이타베이스의 장바구니테이블의 로그인한 사용자가 저장시킨 데이트를 이용하여, 주문상세테이블에 주문상품정보를 저장시킨다.)
-		// 장바구니에서 주문상세로 변환 저장 작업. 
+		// 장바구니에서 주문상세로 변환 저장 작업. (장바구니테이블의 정보를 이용하여 작업)
 		// 이 작업을 통해 주문 후 상품 정보를 확인하거나, 배송, 결제 등과 관련된 후속 처리를 할 수 있게 됨.
 		orderMapper.order_detail_insert(vo.getOrd_code(),m_id);
 		
@@ -59,19 +61,27 @@ public class OrderService {
 		
 		// 5)배송테이블
 		DeliveryVO deliveryVO = new DeliveryVO();
-		deliveryVO.setOrd_code(vo.getOrd_code());
+		deliveryVO.setOrd_code(vo.getOrd_code()); // 주문번호
 		deliveryVO.setShipping_zipcode(vo.getOrd_addr_zipcode());
 		deliveryVO.setShipping_addr(vo.getOrd_addr_basic());
 		deliveryVO.setShipping_deaddr(vo.getOrd_addr_detail());
 		
 		deliveryMapper.delivery_insert(deliveryVO);
 		
-		
-				
-		
-		
-		
 	}
+	
+	// 실시간 결제에 따른 주문상세내역에 주문내역
+	public List<Map<String, Object>> getOrdInfoByOrd_code(Integer ord_code){
+		return orderMapper.getOrdInfoByOrd_code(ord_code);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

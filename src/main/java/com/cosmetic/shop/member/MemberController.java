@@ -96,6 +96,8 @@ public class MemberController {
 				// 사용자를 인증처리하기위한 정보
 				// UserInfo클래스인 userInfo객체가 Object형으로 저장된다. 꺼내올 때는 원래의 형(UserInfo클래스)으로 형변환시켜야 한다.
 				session.setAttribute("login_auth", memberVO);// String name - , Object value - userInfo// "login_auth" 아이디가 필요하면 HttpSession session 만들어야한다
+				
+				//session.setAttribute("login_auth2", "1234");
 				// 세션에 저장    / 아이디와 비번이 일치하면 userInfo정보를 login_auth이름으로 저장,관리함
 				url = "/";
 			}else { // 비번이 틀린의미.
