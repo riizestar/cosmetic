@@ -1,4 +1,4 @@
-package com.cosmetic.shop.order;
+package com.cosmetic.shop.order; // 사용자 주문기능목적
 
 import java.time.LocalDateTime;
 
@@ -11,7 +11,7 @@ import lombok.ToString;
 @Setter
 public class OrderVO {
 	
-	private Integer ord_code;
+	private Integer ord_code; // auto_increment
 	private String m_id;
 	private String ord_name;
 	private String ord_addr_zipcode;
@@ -22,6 +22,6 @@ public class OrderVO {
 	private int ord_price;
 	private String ord_status;
 	private LocalDateTime ord_regdate;
-	private String ord_message;
+	private String ord_message; // 관리자 메모용도
 
 }

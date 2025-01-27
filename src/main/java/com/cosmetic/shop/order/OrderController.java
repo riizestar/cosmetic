@@ -82,9 +82,9 @@ public class OrderController {
 		MemberVO memberVO = memberService.modify(m_id);
 		model.addAttribute("memberVO", memberVO);
 		
-		// 결제진행 할때 사용하는 용도로 
-		model.addAttribute("item_name", item_name);
-		model.addAttribute("quantity", cartDetails.size());
+		// 결제진행할 때 타임리프 페이지에서사용할 용도
+		model.addAttribute("item_name", item_name);// 예> 상품A외2건
+		model.addAttribute("quantity", cartDetails.size()); // 주문수량
 		
 	}
 	
@@ -174,7 +174,9 @@ public class OrderController {
 		
 		cri.setPerPageNum(5);
 		
-		List<Map<String, Object>> order_list = orderService.getOrderInfoByUser_id(m_id, cri);
+		
+		// cri는 목록에 페이지마다 보여주는 출력개수정보, 페이지번호 클릭할 때 선택한 페이지변수
+		List<Map<String, Object>> order_list = orderService.getOrderInfoByUser_id(m_id, cri); // 사용
 		
 		// 날짜폴더의 역슬래쉬 \ 를 / 로 변환작업
 		order_list.forEach(o_Info -> {
@@ -183,9 +185,11 @@ public class OrderController {
 		
 		model.addAttribute("order_list", order_list);
 		
+		
+		// 1	2	3	4	5
 		PageMaker pageMaker = new PageMaker();
-		pageMaker.setCri(cri);
-		pageMaker.setTotalCount(orderService.getOrderCountByUser_id(m_id));
+		pageMaker.setCri(cri); // 사용
+		pageMaker.setTotalCount(orderService.getOrderCountByUser_id(m_id));  // 13
 		
 		model.addAttribute("pageMaker", pageMaker);
 		
