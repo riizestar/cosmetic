@@ -65,7 +65,7 @@ public class OrderController {
 		
 		String item_name = "";// 초기값
 		
-		if(cartDetails.size() == 1) {// cartDetails의 개수
+		if(cartDetails.size() == 1) {// cartDetails의 개수1
 			item_name = (String) cartDetails.get(0).get("pro_name");
 		}else {
 			item_name = (String) cartDetails.get(0).get("pro_name") + " 외" + cartDetails.size();
@@ -131,8 +131,7 @@ public class OrderController {
 		
 		String m_email = ((MemberVO)session.getAttribute("login_auth")).getM_email();
 		
-		// 반드시 0으로 초기화해야함.
-		// 안하면 세션이 유지된 상태에서 새로운 구매를 해 총금액이 누적됨
+		// 반드시 0으로 초기화해야함. 안하면 세션이 유지된 상태에서 새로운 구매를 해 총금액이 누적됨
 		order_total_price = 0;
 		
 		// 주문결과내역(주문번호)
@@ -173,7 +172,6 @@ public class OrderController {
 		String m_id = ((MemberVO) session.getAttribute("login_auth")).getM_id();
 		
 		cri.setPerPageNum(5);
-		
 		
 		// cri는 목록에 페이지마다 보여주는 출력개수정보, 페이지번호 클릭할 때 선택한 페이지변수
 		List<Map<String, Object>> order_list = orderService.getOrderInfoByUser_id(m_id, cri); // 사용

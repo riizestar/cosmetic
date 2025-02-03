@@ -2,6 +2,7 @@ package com.cosmetic.shop.kakaopay;
 
 import java.util.Date;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,8 +30,8 @@ public class KakaopayController {
 	private OrderVO order_info;
 	private int order_total_price;
 	
-	@PostMapping("kakaoPay")
-	public ResponseEntity<ReadyResponse> kakaopay(OrderVO vo,HttpSession session){
+	@PostMapping("kakaoPay") // 카카오페이 선택후 결제하기 버튼클릭하면 ajax방식으로 요청. 
+	public ResponseEntity<ReadyResponse> kakaopay(OrderVO vo, String item_name, int quantity,HttpSession session) {// order_info에서 item_name, quantity
 	
 		// 1) 로그인한 사용자 정보 가져오기
 		m_id = ((MemberVO) session.getAttribute("login_auth")).getM_id();
@@ -39,7 +40,9 @@ public class KakaopayController {
 		log.info("주문정보: " + vo);
 		
 		this.order_info = vo;
-		this.order_total_price = vo.getOrd_price();// 할인 해서 결제금액과 주문금액이 다를 수 있는데?????
+		this.order_total_price = vo.getOrd_price();// 할인 해서 결제금액과 주문금액이 다를 수 있는데???
+		
+		// log.info("카카오페이 정보: " + kakaopayService.getKakaoPayProperties().toString());
 		
 		ResponseEntity<ReadyResponse> entity = null;
 		
@@ -50,8 +53,14 @@ public class KakaopayController {
 		// "cosmeticshop[user123] - Sun Jan 27 15:30:00 GMT 2025"
 		
 		// 3. 카카오페이 결제 준비 요청
+		ReadyResponse readyResponse = kakaopayService.ready(partner_order_id, m_id, item_name, quantity, order_total_price, 0);
 		
-		return entity;
+		log.info("결제준비요청 응답결과" + readyResponse.toString());
+		
+		// 4. 응답을 ResponseEntity로 감싸서 반환.   readyResponse 객체의 정보가 ajax호출한 쪽으로 넘어간다.
+		entity = new ResponseEntity<ReadyResponse>(readyResponse, HttpStatus.OK);
+		
+		return entity;// jquery 결제하기 이벤트로 제어가 넘어간다.
 	}
 	
 	
