@@ -5,8 +5,10 @@ import java.util.Date;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cosmetic.shop.member.MemberVO;
 import com.cosmetic.shop.order.OrderService;
@@ -62,6 +64,59 @@ public class KakaopayController {
 		
 		return entity;// jquery 결제하기 이벤트로 제어가 넘어간다.
 	}
+	
+	// (카카오페이 API서버가 호출함)
+	// 카카오페이 개발자 애플리케이션 플랫폼에 설정
+	// 결제준비요청이 성공되면, QR코드 페이지에서 스캔작업 진행 후 pg_token 값이 전달되고 호출됨
+	@GetMapping("/approval")
+	public String approval(String pg_token, RedirectAttributes rttr) {
+		
+		log.info("pg_token: " + pg_token);
+		
+		// 결제승인요청
+		String response = kakaopayService.approve(pg_token);
+		
+		// 결제승인요청의 성골 응답파라미터로 aid를 확인
+		if(response.contains("aid")) {
+			//OrderService 파일에서 주문관련작업
+			orderService.order_process(this.order_info, m_id, "카카오페이");
+		}
+		
+		rttr.addAttribute("ord_code", order_info.getOrd_code());
+		// /order/order_result?ord_code=주문번호
+		return "redirect:/order/order_result";
+	}
+	
+	// 결제가 취소
+	@GetMapping("/cancle")
+	public String cancle() {
+		
+		return "/order/order_cancel";
+	}
+	
+	// 결제가 실패
+	@GetMapping("/fail")
+	public String fail() {
+		
+		return "/order/order_fail";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

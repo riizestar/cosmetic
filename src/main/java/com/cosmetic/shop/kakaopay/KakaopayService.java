@@ -59,9 +59,9 @@ public class KakaopayService {
 				.quantity(quantity)
 				.total_amount(total_amount)
 				.tax_free_amount(tax_free_amount)
-				.approval_url(item_name)
-				.cancel_url(item_name)
-				.fail_url(item_name)
+				.approval_url(approval)
+				.cancel_url(cancel)
+				.fail_url(fail)
 				
 				.build();
 		
@@ -101,6 +101,48 @@ public class KakaopayService {
 		return headers;
 		
 	}
+	
+	// 2차요청(결제승인요청-approve). 
+	public String approve(String pg_token) {
+		
+		// 1)Request header
+		HttpHeaders headers = getHttpHeaders();
+		
+		// 2)Request param
+		ApproveRequest approveRequest = ApproveRequest.builder()
+				.cid(cid)
+				.tid(tid)
+				.partner_order_id(partner_order_id)
+				.partner_user_id(partner_user_id)
+				.pg_token(pg_token)
+				.build();
+		
+		// data request. 결제승인요청에 보낼 헤더와파라미터를 가지고 있는 객체작업.
+		// HttpEntity는 HTTP 요청에 본문과 헤더를 결합
+		HttpEntity<ApproveRequest> entityMap = new HttpEntity<>(approveRequest, headers);//<>자동추론
+		
+		// 결제승인요청
+		// 결제준비요청. 
+		ResponseEntity<ApproveResponse> response = new RestTemplate().postForEntity(
+				approveUrl, entityMap, ApproveResponse.class);
+		
+		//log.info("결제승인요청응답: " + response);
+			
+		//log.info("결제승인상태코드: " + response.getStatusCode());		
+		
+		//if(response.toString().contains("aid")) {
+		//log.info("주문관련작업");
+		//}
+			
+		//if(response.getStatusCode() == HttpStatus.OK) {
+		//log.info("주문관련작업");
+		//}
+		
+		
+		return response.toString();
+	}
+	
+	
 	
 	
 	
