@@ -21,7 +21,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		registry.addInterceptor(loginInterceptor)
 				.addPathPatterns("/cart/**","/order/**")
 				.excludePathPatterns("/","/member/login","/member/join","/order/image_display"); // 제외주소
-				
+				                                                         // 웹메일에서 사용
 	}
 	
 	
