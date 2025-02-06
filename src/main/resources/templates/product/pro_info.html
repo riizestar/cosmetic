@@ -36,7 +36,7 @@
           <button type="button" class="btn btn-outline-primary" id="btn_cart_add">Cart</button> 
           <button type="button" class="btn btn-outline-primary" id="btn_buy_add">Buy</button>
         </div>
-        <small class="text-body-secondary">상품후기 : [[${productVO.pro_review}]]</small>
+        <small class="text-body-secondary">상품후기 :   <span id="review_count" th:text="${productVO.pro_review}"></span></small>
       </div>
     </div>
   </div>
@@ -52,7 +52,30 @@
         <p th:utext="${productVO.pro_content}"></p>
       </div>
       <div id="tabs-2">
-        <p>리뷰</p>
+        <div class="row mt-3 mb-3">
+          <div class="col-10">
+            <textarea class="form-control" id="rev_content" rows="3"></textarea>
+          </div>
+          <div class="col-2">
+            <p id="star_rev_rate">
+              <a class="rev_rate" href="#">☆</a>
+              <a class="rev_rate" href="#">☆</a>
+              <a class="rev_rate" href="#">☆</a>
+              <a class="rev_rate" href="#">☆</a>
+              <a class="rev_rate" href="#">☆</a>
+              (별평점)
+            </p>
+            <button type="button" class="btn btn-primary mb-2" id="btn_rev_save" th:data-pro_num="${productVO.pro_num}">후기 작성하기</button>
+          </div>
+        </div>
+        <div class="row">
+          <!-- 상품후기목록이 출력되는 위치 -->
+          <div class="col" id="reviewList"></div>
+        </div>
+        <div class="row">
+          <!-- 상품 페이지 출력되는 위치 [prev] 1 2 3 4 5 [next]-->
+          <div class="col" id="reviewPaging"></div>
+        </div>
       </div>
       <div id="tabs-3">
         <p>QnA</p>
