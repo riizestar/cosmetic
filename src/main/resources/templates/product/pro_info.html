@@ -4,15 +4,138 @@
 	layout:decorate="~{layouts/layout}">
 
 <th:block layout:fragment="css">
+  <style>
+    /* 별평점 기본효과 스타일 */
+    p#star_rev_rate a.rev_rate {
+      font-size: 22px;
+      text-decoration: none;
+      color: lightgray;
+    }
+
+    /* 별평점에 클릭했을 경우 선택자 */
+    p#star_rev_rate a.rev_rate.on {
+       color: black;
+    }
+
+  </style>
+  
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
 </th:block>    
 <th:block layout:fragment="script">
   <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
   <script>
+  
     $( function() {
       $( "#tabs" ).tabs();
     } );
     </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+  <script id="templateReview" type="text/x-handlebars-template">
+    <table class="table" id="reviewTable">
+      <tbody>
+        {{#each .}}
+        <tr>
+        <td>{{rev_code}}</td>
+        <td>{{m_id}}</td>
+        <td>{{rev_content}}</td>
+        <td>{{displayStar rev_rate}}</td>
+        <td>{{convertDate rev_date}}</td>
+        <td>
+          {{authControlView m_id rev_code}}         
+        </td>
+        </tr>
+        {{#if replies.length}}
+        {{#each replies}}
+        <tr>
+          <td colspan="6">[관리자] 답변글 : {{reply_text}} 작성일 : {{convertDate reply_date}}</td>
+        </tr>
+        {{/each}}
+        {{/if}}
+        {{/each}}
+      </tbody>
+      </table>
+
+  </script>
+  
+  <!-- 자바스크립트에서 타임리프 문법을 사용할 때 아래와 같이 작성한다. -->
+  <script th:inline="javascript">
+  // 핸들바 템플릿에서 사용자정의 함수 : 후기작성시간 포맷(형식) 2025/01/06 11:55:30
+  Handlebars.registerHelper("convertDate", function(reviewDate) {// Handlebars의 사용자 정의 함수를 만드는 방법"템플릿에서 호출할 수 있는 헬퍼 함수"
+    const date = new Date(reviewDate);
+
+    let month = (date.getMonth()+1 < 10 ? "0" + (date.getMonth()+1) : date.getMonth()+1);
+    let day = (date.getDate() < 10 ? "0" + (date.getDate()) : date.getDate());
+    let hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+    let minute = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+    let second = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+    return date.getFullYear() + "/" + month + "/" + day + " " + hour + ":" + minute + ":" + second;
+  });
+  
+  // 핸들바 템플릿 사용자정의 함수 : 로그인사용자와 후기작성자(msbp_id)가 동일할 때만 수정,삭제 버튼표시
+  Handlebars.registerHelper("authControlView", function(m_id, rev_code) {
+    
+    // console.log("작성자", m_id);
+    // console.log("상품후기코드", rev_code);
+    
+    // 로그인사용자 : 세션으로 확인
+    
+    let memberVo = [[${session.login_auth}]];
+
+    let loginId = "";
+    
+    if(memberVo !== null) { // 로그인 상태이면
+      loginId = [[${session.login_auth == null? '' : session.login_auth.m_id}]];
+    }// login_auth == null이면 '', 아니면 session.login_auth.m_id이 loginId에 할당됨
+    
+    // loginId = [[${session.login_auth == null? '' : session.login_auth.m_id}]];
+
+
+    console.log("아이디", loginId);
+    
+ 	// 후기평점을 이용한 별표시 핸들바 사용자정의 함수
+    Handlebars.registerHelper("displayStar", function(rating) {
+      let star = "";
+      switch(rating) {
+        case 1:
+          star = "★☆☆☆☆";
+          break;
+        case 2:
+          star = "★★☆☆☆";
+          break;
+        case 3:
+          star = "★★★☆☆";
+          break;
+        case 4:
+          star = "★★★★☆";
+          break;
+        case 5:
+          star = "★★★★★";
+          break;
+      }
+      return star;
+    });
+
+
+    
+    
+    
+  });
+  
+  
+  </script>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 </th:block>
 
 <th:block layout:fragment="content">
@@ -123,6 +246,67 @@
           //console.log("url", url);
           location.href = url;
       });
+      
+   	// 상품후기저장 클릭이벤트.  id="btn_rev_save"
+      $("button#btn_rev_save").on("click", function() {
+        let pro_num = $(this).data("pro_num"); // 상품코드
+        let rev_content = $("#rev_content").val(); // 상품평
+        let rev_rate = 0; // 별평점
+
+        // <a class="rev_rate on">★</a> 태그에 class="rev_rate on" 이 개수가 몇개인지 체크
+        $("p#star_rev_rate a.rev_rate").each(function() {
+          if($(this).attr("class") == "rev_rate on") {
+            rev_rate += 1;
+          }
+        })
+
+        if(rev_content == "") {
+          alert("후기 평을 작성해주세요");
+          return;
+        }
+
+        if(rev_rate == 0) {
+          alert("별 평점을 선택하세요.");
+          return;
+        }
+        // REST API 개발방법론 : 서버와클라이언트가 데이타를 JSON포맷으로 주고 받는 특징. https://junvelee.tistory.com/107
+        // 데이타 : 자바스크립트 object문법
+        let review_data = {pro_num : pro_num, rev_content : rev_content, rev_rate : rev_rate};
+
+        $.ajax({
+          url : '/review/review_save',
+          type: 'post',
+          headers: {
+            "Content-Type" : "application/json", "X-HTTP-Method-Overrid" : "POST"
+          },
+          data : JSON.stringify(review_data), // object문법을 json문자열로 변환
+          dataType: 'text',
+          success: function(review_count) {
+            if(review_count > 0) {
+              alert("상품후기 등록됨");
+
+              // 리뷰카운트 보여주기.  id="review_count"
+              $("span#review_count").html(review_count);
+
+              reviewPage = 1;
+              getPage(url);
+            }
+          }
+        });
+      });
+   	
+      // 별평점 클릭 이벤트일때 스타일 효과
+      $("p#star_rev_rate a.rev_rate").on("click", function(e) {
+       
+        e.preventDefault();
+        // 기존에 적용했던 a태그(별)들의 on 클래스선택자 제거
+        $(this).parent().children().removeClass("on");
+        // 선택한 a태그 자신에 on 클래스선택자 적용하고, 이전 a태그(이전 별들)에게도 on 클래스선택자 적용
+        $(this).addClass("on").prevAll("a").addClass("on");
+      })
+      
+      
+      
 
     }); // ready event end
 
