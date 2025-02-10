@@ -247,6 +247,132 @@
           location.href = url;
       });
       
+      
+      // 상품후기 요청작업
+      let pro_num = [[productVO.pro_num]];// 상품코드.  스프링의 model 에서 productVo 이름으로 참조.
+      let reviewPage = 1; // 댓글목록의 첫번째 페이지 의미.
+
+      // 댓글목록 데이타를 불러올 주소.   
+      // 전통적인 주소 예> /replies/pages?bno=3510&page=1
+      // 예> rest api 권장하는 경로형태주소 /rev_list/pages/3510/1
+      // 3510번 게시물을 참조하는 댓글데이타 1번째 페이지에 출력되는 것을 가져오는 의미.
+      let url = "/review/rev_list/" + pro_num + "/" + reviewPage; //"rev_list/{pro_num}/{page}"
+      
+      console.log("url", url);  // /rev_list/pages/20/1
+
+      getPage(url);
+
+      // 스프링에서 댓글목록과 페이징정보를 ajax기능으로 호출하는 함수.
+      function getPage(url) {
+
+        $("#rev_content").val(""); // 후기평을 지우기
+        $("p#star_rev_rate a.rev_rate").removeClass("on"); // 별평점 초기화
+
+        // data : 스프링에서 json포맷으로 보낸 댓글목록과페이징정보데이타 받게된다
+        $.getJSON(url,function(data){
+
+          console.log(data.rev_list); // 상품후기와답변 목록데이타
+				  console.log(data.pageMaker); // 댓글 페이징정보
+
+        // 상품후기와답변목록출력함수
+				// data.rev_list : 상품후기목록데이타, $("div#reviewList") : 상품후기가 출력될 태그위치  $("#templateReview") : 상품후기 핸들바템플릿
+        fn_displayReViewData(data.rev_list, $("div#reviewList"), $("templateReview"));  
+
+        // 페이징출력함수
+        // data.pageMaker : 페이징정보데이타, $("div#reviewPaging") : 페이징이 출력될 태그위치
+        fn_displayReViewPaging(data.pageMaker, $("div#reviewList"))  
+
+      });
+      }
+
+      // 댓글목록출력함수 : 핸들바 템플릿 사용
+		  // replyData : json포맷의 댓글목록데이타
+		  // target : 댓글목록 데이타가 출력될 위치
+		  // template : 핸들바 템플릿 
+      function fn_displayReViewData(reviewData, target, template){
+        let templateObj = Handlebars.compile(template.html());//댓글 핸들바템플릿 내용을 문법검사
+        let reviewHtml = templateObj(reviewData);// 데이타 + 핸들바템플릿 결합된 결과의 html코드
+
+        target.empty(); // 기존 댓글목록 제거
+        target.append(reviewData);// 댓글목록이 출력됨
+
+        // update 버튼 숨기기.
+        $("table#reviewTable button[name=update]").hide();
+      }
+
+      // 페이징출력함수 - 핸들바 템플릿 사용안함.
+      function fn_displayReViewPaging(pageData, target) {
+
+        console.log(pageData);
+
+        // nav태그에 ul
+        let pageStr = '<nav aria-label="Page navigation example">';
+            pageStr = '<ul class="pagination">';
+
+        if(pageData.prev) {
+          pateStr += '<li class="page-item"><a class="page-link" href="' + (pageData.startPage -1) + '">Previous</a></li>';
+        }       
+        
+        for(let i=pageData.startPage; i <= pageData.endPage; i++) {
+				let curPageClass = (pageData.cri.page == i) ? 'active' : '';
+				pageStr += '<li class="page-item ' + curPageClass + '"><a class="page-link" href="' + i + '">' + i + '</a></li>';
+			}
+
+      if(pageData.next) {
+				pageStr += '<li class="page-item"><a class="page-link" href="' + (pageData.endPage + 1) + '">Next</a></li>';
+			}
+
+      pageStr += '</ul>';
+      pageStr += '</nav>';
+
+      console.log(pageStr);
+
+      target.empty();
+      target.append(pageStr);
+
+      }
+
+       // 페이지 번호 클릭설정  1	2	3	4	5 next
+    $("div#reviewPaging").on("click", "li a", function(e) {
+      e.preventDefault(); // a태그의 링크기능을 제거.
+      // $(this) : 선택한 a태그를 참조.
+      reviewPage = $(this).attr("href");  // 페이지번호 읽기.
+
+      //console.log("선택한 페이지: ", replyPage); // 3
+
+      //console.log("url", url); //  /replies/pages/3510/1
+
+      url = "/review/rev_list/" + pro_num + "/" + reviewPage;
+
+      getPage(url);
+    });
+
+    $("div#reviewPaging").on("click", "li a", function(e) {
+
+    });
+
+
+
+
+
+
+
+
+
+
+      
+      
+      
+      // 별평점 클릭 이벤트일때 스타일 효과
+      $("p#star_rev_rate a.rev_rate").on("click", function(e) {
+       
+        e.preventDefault();
+        // 기존에 적용했던 a태그(별)들의 on 클래스선택자 제거
+        $(this).parent().children().removeClass("on");
+        // 선택한 a태그 자신에 on 클래스선택자 적용하고, 이전 a태그(이전 별들)에게도 on 클래스선택자 적용
+        $(this).addClass("on").prevAll("a").addClass("on");
+      })
+      
    	// 상품후기저장 클릭이벤트.  id="btn_rev_save"
       $("button#btn_rev_save").on("click", function() {
         let pro_num = $(this).data("pro_num"); // 상품코드
@@ -295,15 +421,7 @@
         });
       });
    	
-      // 별평점 클릭 이벤트일때 스타일 효과
-      $("p#star_rev_rate a.rev_rate").on("click", function(e) {
-       
-        e.preventDefault();
-        // 기존에 적용했던 a태그(별)들의 on 클래스선택자 제거
-        $(this).parent().children().removeClass("on");
-        // 선택한 a태그 자신에 on 클래스선택자 적용하고, 이전 a태그(이전 별들)에게도 on 클래스선택자 적용
-        $(this).addClass("on").prevAll("a").addClass("on");
-      })
+     
       
       
       

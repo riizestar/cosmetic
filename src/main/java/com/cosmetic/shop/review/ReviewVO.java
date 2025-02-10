@@ -1,6 +1,7 @@
 package com.cosmetic.shop.review;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.cosmetic.shop.admin.product.ProductVO;
 
@@ -25,6 +26,12 @@ public class ReviewVO {
 	// 사용자 상품후기목록에서는 사용 안함.
 	// 관리자 상품후기목록에서는 사용 함.
 	private ProductVO product;
+	
+	// 상품후기 답변
+	// review_tbl테이블과 review_replies_tbl테이블(1:N관계)
+	// left outer join
+	// mybatis의 collection문법사용
+	private List<ReviewReply> replies; // 추가
 	
 	
 

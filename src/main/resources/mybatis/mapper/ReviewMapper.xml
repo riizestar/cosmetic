@@ -2,6 +2,54 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cosmetic.shop.review.ReviewMapper">
 
+	<!-- ReviewResultMap 구조를 아래 left outer join의 실행 결과의 데이타를 저장하는 구조 -->
+	<select id="rev_list" resultMap="ReviewResultMap">
+		select 
+			rt.rev_code, rt.m_id, rt.pro_num, rt.rev_content, rt.rev_rate, rt.rev_date,
+			rrt.rev_code, rrt.manager_id, rrt.reply_id, rrt.reply_text, rrt.reply_date 
+		from 
+			review_tbl rt 
+		left outer join 
+			review_replies_tbl rrt 
+		on 
+			rt.rev_code = rrt.rev_code
+		where 
+			pro_num = #{pro_num}
+        order by 
+			rt.rev_date desc, rrt.reply_date
+		limit 
+			#{cri.pageStart}, #{cri.perPageNum}
+	
+	</select>
+	<!-- left outer join 
+	:리뷰에 대한 답변이 있으면 해당 답변도 가져오고, 답변이 없는 리뷰는 답변 필드가 null로 반환 -->
+	
+	<!-- 결과를 매핑작업.(출력형식)    -->
+	<resultMap id="ReviewResultMap" type="com.ezen.shop.review.ReviewVO">
+        <id property="rev_code" column="rev_code"/> <!-- pk -->
+        <result property="m_id" column="m_id"/>
+        <result property="pro_num" column="pro_num"/>
+        <result property="rev_content" column="rev_content"/>
+        <result property="rev_rate" column="rev_rate"/>
+        <result property="rev_date" column="rev_date"/>
+        <collection property="replies" ofType="com.ezen.shop.review.ReviewReply">
+            <id property="reply_id" column="reply_id"/>  <!--  pk -->
+            
+            <!--  fk 중복작업하면 안된다. -->
+            <!--  <result property="rev_code" column="rev_code"/>  -->
+            
+            <result property="manager_id" column="manager_id"/>
+            <result property="reply_text" column="reply_text"/>
+            <result property="reply_date" column="reply_date"/>
+        </collection>
+    </resultMap>
+
+
+
+
+
+
+
 	<insert id="review_save">
 	
 		insert into 
