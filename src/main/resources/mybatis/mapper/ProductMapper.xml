@@ -41,6 +41,28 @@
 			pro_num = #{pro_num}		
 	
 	</select>
+	
+	<update id="review_count" parameterType="Integer">
+	
+		update
+			product_tbl
+		set
+			pro_review = pro_review + 1
+		where
+			pro_num = #{pro_num}	
+	
+	</update>
+	
+	<select id="review_count_pro_info">
+	
+		select 
+			pro_review
+		from 
+			product_tbl
+		where
+			pro_num = #{pro_num}
+	
+	</select>
 
 
 

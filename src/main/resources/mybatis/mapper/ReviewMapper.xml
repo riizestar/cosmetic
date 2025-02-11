@@ -25,14 +25,14 @@
 	:리뷰에 대한 답변이 있으면 해당 답변도 가져오고, 답변이 없는 리뷰는 답변 필드가 null로 반환 -->
 	
 	<!-- 결과를 매핑작업.(출력형식)    -->
-	<resultMap id="ReviewResultMap" type="com.ezen.shop.review.ReviewVO">
+	<resultMap id="ReviewResultMap" type="com.cosmetic.shop.review.ReviewVO">
         <id property="rev_code" column="rev_code"/> <!-- pk -->
         <result property="m_id" column="m_id"/>
         <result property="pro_num" column="pro_num"/>
         <result property="rev_content" column="rev_content"/>
         <result property="rev_rate" column="rev_rate"/>
         <result property="rev_date" column="rev_date"/>
-        <collection property="replies" ofType="com.ezen.shop.review.ReviewReply">
+        <collection property="replies" ofType="com.cosmetic.shop.review.ReviewReply">
             <id property="reply_id" column="reply_id"/>  <!--  pk -->
             
             <!--  fk 중복작업하면 안된다. -->

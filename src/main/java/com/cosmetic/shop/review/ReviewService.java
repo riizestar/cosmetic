@@ -3,6 +3,7 @@ package com.cosmetic.shop.review;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cosmetic.shop.common.utils.SearchCriteria;
 import com.cosmetic.shop.product.ProductMapper;
@@ -24,6 +25,9 @@ public class ReviewService {
 	public void review_save(ReviewVO vo) {
 		// 1)상품후기 등록
 		reviewMapper.review_save(vo);
+		
+		// 2)상품테이블 후기카운트 증가작업(증가만하고 다시 읽어오는 작업은 review_count_pro_info())
+		productMapper.review_count(vo.getPro_num());
 	}
 	
 	

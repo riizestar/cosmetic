@@ -28,6 +28,11 @@ public class ProductService {
 		return productMapper.pro_info(pro_num);
 	}
 	
+	// 상품후기 카운트 증가한거를 읽어오는 작업.
+	public int review_count_pro_info(Integer pro_num) {
+		return productMapper.review_count_pro_info(pro_num);
+	}
+	
 	
 	
 	

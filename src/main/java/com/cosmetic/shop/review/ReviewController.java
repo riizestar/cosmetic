@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,8 +52,10 @@ public class ReviewController {
 		
 		List<ReviewVO> rev_list = reviewService.rev_list(pro_num, cri);
 				
+		// key가 자바스크립트의 ajax 변수에서 참조한다.
+		map.put("rev_list", rev_list);
 		
-		
+		entity = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
 		
 		return entity;
 		
@@ -92,7 +95,13 @@ public class ReviewController {
 		
 		ResponseEntity<String> entity = null;
 		
+		// 상품후기등록
 		reviewService.review_save(vo);
+		
+		// 상품후기 카운트 읽어오는 작업.
+		int review_count = productService.review_count_pro_info(vo.getPro_num());
+		
+		entity = new ResponseEntity<String>(String.valueOf(review_count),HttpStatus.OK);
 		
 		return entity;
 	}

@@ -16,6 +16,12 @@ public interface ProductMapper {
 	
 	ProductVO pro_info(Integer pro_num);
 	
+	// 상품테이블 후기카운트 증가작업
+	void review_count(Integer pro_num);
+	
+	// 상품후기 작업후 리뷰카운트 조회.
+	int review_count_pro_info(Integer pro_num);
+	
 	
 	
 	
