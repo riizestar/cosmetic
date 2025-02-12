@@ -34,6 +34,10 @@ public class ReviewService {
 		productMapper.review_count(vo.getPro_num());
 	}
 	
+	public ReviewVO review_info(Long rev_code) {
+		return reviewMapper.review_info(rev_code);
+	}
+	
 	
 	
 	

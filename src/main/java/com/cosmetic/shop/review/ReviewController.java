@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,6 +36,7 @@ public class ReviewController {
 	
 	// 자바스크립트로 작업하기 이전에 테스트를 postman 툴로 확인해본다.
 	// 1)상품후기목록- List<ReviewVO)  2)페이징 데이타 작업 PageMaker 2가지를 하나의 Map으로 관리
+	// @PathVariable은 URL 경로에서 값을 추출해서 메서드 매개변수에 전달
 	@GetMapping("rev_list/{pro_num}/{page}")
 	public ResponseEntity<Map<String, Object>> rev_list(@PathVariable("pro_num") Integer pro_num,
 												@PathVariable("page") int page) throws Exception{
@@ -70,11 +72,6 @@ public class ReviewController {
 	}
 	
 	
-	
-
-	
-
-	
 	// Create(등록)
 	// @RequestBody ReviewVO vo : 클라이언트에서 전송되어 온 JSON문자열 데이타를 ReviewVO클래스의 필드로 매핑(변환)하는 작업.
 	// consumes = "application/json" : 클라이언트에서 전송하는 데이터는 JSON 형식
@@ -98,7 +95,27 @@ public class ReviewController {
 		entity = new ResponseEntity<String>(String.valueOf(review_count),HttpStatus.OK);
 		
 		return entity;
+		
 	}
+	
+	// 수정목적으로 사용할 상품후기정보를 JSON 포맷으로 클라이언트에게 보낸다.
+	@GetMapping(value = "/review_info/{rev_code}")
+	public ResponseEntity<ReviewVO> review_info(@PathVariable("rev_code") Long rev_code) throws Exception{
+		
+		log.info("후기코드: " + rev_code);
+		
+		ResponseEntity<ReviewVO> entity = null;
+		
+		entity = new ResponseEntity<ReviewVO>(reviewService.review_info(rev_code), HttpStatus.OK);
+		
+		return entity;
+	}
+	
+	// 수정하기
+	@PutMapping("/review_modify")
+	public ResponseEntity<String> review_modify()
+	
+	
 	
 	
 	

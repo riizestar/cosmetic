@@ -58,11 +58,6 @@
     </select>
 
 
-
-
-
-
-
 	<insert id="review_save">
 	
 		insert into 
@@ -71,6 +66,17 @@
 			(#{m_id},#{pro_num},#{rev_content},#{rev_rate})	
 			 
 	</insert>
+	
+	<select id="review_info">
+	
+		select
+			rev_code, m_id,pro_num,rev_content,rev_rate, rev_date
+		from 
+			review_tbl
+		where
+			rev_code = #{rev_code}
+	
+	</select>
 
 
 

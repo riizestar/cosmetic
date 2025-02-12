@@ -16,5 +16,8 @@ public interface ReviewMapper {
 	int getCountReviewByPro_num(Integer pro_num);
 	
 	void review_save(ReviewVO vo);
+	
+	// 수정목적으로 사용할 상품후기정보
+	ReviewVO review_info(Long rev_code); 
 
 }
