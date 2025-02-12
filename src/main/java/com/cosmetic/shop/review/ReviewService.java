@@ -21,7 +21,11 @@ public class ReviewService {
 		return reviewMapper.rev_list(pro_num, cri);
 	}
 	
+	public int getCountReviewByPro_num(Integer pro_num) {
+		return reviewMapper.getCountReviewByPro_num(pro_num);
+	}
 	
+	@Transactional
 	public void review_save(ReviewVO vo) {
 		// 1)상품후기 등록
 		reviewMapper.review_save(vo);

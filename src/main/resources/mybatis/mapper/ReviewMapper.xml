@@ -43,6 +43,19 @@
             <result property="reply_date" column="reply_date"/>
         </collection>
     </resultMap>
+    
+    
+    <!-- left outer join을 사용하지 않아도, review_tbl테이블의 전체데이타 개수를 가져오는 의미가 같기때문. -->
+    <select id="getCountReviewByPro_num" resultType="int" parameterType="Integer">
+    
+    	select 
+			count(*) 
+		from 
+			review_tbl
+		where 
+			pro_num = #{pro_num}
+			
+    </select>
 
 
 

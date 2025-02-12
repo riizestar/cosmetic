@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cosmetic.shop.common.utils.PageMaker;
 import com.cosmetic.shop.common.utils.SearchCriteria;
 import com.cosmetic.shop.member.MemberVO;
 import com.cosmetic.shop.product.ProductService;
@@ -51,9 +52,15 @@ public class ReviewController {
 		cri.setPage(page);
 		
 		List<ReviewVO> rev_list = reviewService.rev_list(pro_num, cri);
-				
+		
+		//2)페이징정보 : 개수
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(reviewService.getCountReviewByPro_num(pro_num));
+		
 		// key가 자바스크립트의 ajax 변수에서 참조한다.
 		map.put("rev_list", rev_list);
+		map.put("pageMaker", pageMaker);
 		
 		entity = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
 		
@@ -64,22 +71,9 @@ public class ReviewController {
 	
 	
 	
+
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	// Create(등록)
 	// @RequestBody ReviewVO vo : 클라이언트에서 전송되어 온 JSON문자열 데이타를 ReviewVO클래스의 필드로 매핑(변환)하는 작업.
