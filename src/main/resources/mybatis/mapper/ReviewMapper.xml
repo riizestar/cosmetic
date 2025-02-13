@@ -88,6 +88,15 @@
 			rev_code = #{rev_code}	
 	
 	</update>
+	
+	<delete id="review_delete">
+	
+		delete from
+			review_tbl
+		where
+			rev_code = #{rev_code}
+	
+	</delete>
 
 
 

@@ -523,6 +523,42 @@
       // 상품후기, 페이징정보를 스프링으로 부터 재 호출
       //getPage(url);
     });
+    
+ 	// 취소 이벤트. 
+    $("div#reviewList").on("click", "button[name='cancel']", function() {
+     getPage(url);
+
+    });
+ 	
+    // 삭제 이벤트
+    $("div#reviewList").on("click", "button[name='delete']", function() {
+     
+     if(!confirm("상품후기를 삭제하시겠습니까?")) return;
+
+     let rev_code = $(this).data("rev_code");
+
+     console.log("상품후기코드", rev_code);
+
+     // 스프링 작업.
+     $.ajax({
+       url: '/review/review_delete/' + rev_code,
+       type: 'delete',
+       headers: {
+         "X-HTTP-Method-Overrid" : "DELETE"
+       },
+       dataType: 'text',
+       success: function(result) {
+         if(result == "success") {
+           alert("상품후기 삭제됨");
+           
+           getPage(url);
+         }
+       }
+     });
+     
+     //getPage(url);
+
+    });
 
 
 

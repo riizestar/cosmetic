@@ -4,9 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.text.html.parser.Entity;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -127,6 +130,19 @@ public class ReviewController {
 		return entity;
 	}
 	
+	// 삭제하기
+	@DeleteMapping("/review_delete/{rev_code}")// {경로변수}클라이언트가 요청을 보낼 때 동적으로 바뀌는 부분, 경로변수
+	public ResponseEntity<String> review_delete(@PathVariable("rev_code") Long rev_code)throws Exception{
+		// @PathVariable URL 경로에서 {}에 해당하는 값을 메서드의 변수에 넣음
+		
+		ResponseEntity<String> entity = null;
+		
+		reviewService.review_delete(rev_code);
+		
+		entity = new ResponseEntity<String>("success", HttpStatus.OK);
+		
+		return entity;
+	}
 	
 	
 	
