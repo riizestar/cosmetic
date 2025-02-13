@@ -77,6 +77,17 @@
 			rev_code = #{rev_code}
 	
 	</select>
+	
+	<update id="review_modify">
+	
+		update
+			review_tbl
+		set
+			rev_rate = #{rev_rate}, rev_content = #{rev_content}, rev_date = now()
+		where
+			rev_code = #{rev_code}	
+	
+	</update>
 
 
 

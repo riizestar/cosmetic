@@ -38,6 +38,10 @@ public class ReviewService {
 		return reviewMapper.review_info(rev_code);
 	}
 	
+	public void review_modify(ReviewVO vo) {
+		reviewMapper.review_modify(vo);
+	}
+	
 	
 	
 	

@@ -113,7 +113,19 @@ public class ReviewController {
 	
 	// 수정하기
 	@PutMapping("/review_modify")
-	public ResponseEntity<String> review_modify()
+	public ResponseEntity<String> review_modify(@RequestBody ReviewVO vo) throws Exception {
+		
+		ResponseEntity<String> entity = null;
+		
+		reviewService.review_modify(vo);
+		
+		// ResponseEntity는 생성 시에 두 가지 주요 요소를 설정
+		// 1.본문(body): 응답의 실제 내용, 즉 클라이언트에게 전달할 데이터.
+		// 2.상태 코드(status code): HTTP 응답의 상태 코드
+		entity = new ResponseEntity<String>("success", HttpStatus.OK);
+		
+		return entity;
+	}
 	
 	
 	

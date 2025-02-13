@@ -19,5 +19,7 @@ public interface ReviewMapper {
 	
 	// 수정목적으로 사용할 상품후기정보
 	ReviewVO review_info(Long rev_code); 
+	
+	void review_modify(ReviewVO vo);
 
 }
