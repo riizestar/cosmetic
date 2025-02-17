@@ -12,4 +12,10 @@ public interface AdReviewMapper {
 	List<ReviewVO> review_list(@Param("cri") SearchCriteria cri,
 			@Param("rev_rate") String rev_rate, @Param("rev_content") String rev_content);
 
+	int review_count(@Param("cri") SearchCriteria cri, @Param("rev_rate") String rev_rate,
+			@Param("rev_content") String rev_content);
+	
+	
+	
+	
 }

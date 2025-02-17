@@ -85,6 +85,22 @@
 
 		</sql>
 		
+		
+		<select id="review_count" resultType="int">
+		
+			select 
+				count(*) 
+			from 
+				review_tbl rt
+			left outer join
+				product_tbl pt
+			on 
+				rt.pro_num = pt.pro_num
+			where 
+				rt.rev_code > 0	
+		
+		</select>
+		
 	
 	
 	
