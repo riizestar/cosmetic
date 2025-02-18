@@ -69,9 +69,9 @@
 						<table class="table table-bordered">
 						  <thead>
 							<tr>
-							  <th style="width: 10%;">번호</th>
+							  <th style="width: 10%;">리뷰번호</th>
 							  <th style="width: 10%;">답변</th>
-							  <th style="width: 20%;">상품정보</th>
+							  <th style="width: 20%;">상품명 / 상품코드</th>
 							  <th style="width: 30%;">평점 / 내용</th>
 							  <th style="width: 10%">작성자</th>
 							  <th style="width: 10%">작성일</th>
@@ -90,7 +90,7 @@
 								</td>
 								<td><!-- vo,dto 를 결과로 사용할 때는 dates, map으로 결과를 사용 할때는  temporals -->
 								<img style="width: 100px;height: 100px;" th:src="${'/admin/review/image_display?dateFolderName=' + review_info.product.pro_up_folder + '&fileName=s_' + review_info.product.pro_img}">
-								[[${review_info.product.pro_num}]]<br>
+								[[${review_info.pro_num}]]<br>
 								[[${review_info.product.pro_name}]]
 								
 							  </td>
@@ -302,6 +302,133 @@
 		</script>
 		<!-- 부트스트랩5 자바스크립트 파일 -->
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+		<script>
+			// 모달 대화상자 초기화 및 이벤트 리스너 설정
+			document.addEventListener("DOMContentLoaded", () => {
+				
+				const criteriaForm = document.getElementById("criteriaForm");
 
+				// Add click event listener to all elements with class "movepage"
+				document.querySelectorAll("a.movepage").forEach(function(anchor) {
+					anchor.addEventListener("click", function(event) {
+						event.preventDefault(); // Prevent the default anchor behavior
+
+						// Update the hidden input field with name 'page' to the href value of the clicked anchor
+						const pageInput = criteriaForm.querySelector("input[name='page']");
+						if (pageInput) {
+							pageInput.value = anchor.getAttribute("href");
+						}
+
+						// Submit the form programmatically
+						criteriaForm.submit();
+					});
+				});
+				
+				
+				// 모달대화상자 태그를 참조.
+				const modalElement = document.querySelector("#review_reply_modal");
+				
+				// 부트스트랩 5 제공하는 자바스크립트 명령어
+				// modalInstance 객체를 이용하여, show(), hide()메서드 사용해서 보이기, 숨기기 기능을 제어.
+				const modalInstance = new bootstrap.Modal(modalElement);
+
+				// 모달대화상자의 제목, 내용부분의 태그를 참조
+				const modalTitle = document.querySelector("#exampleModalLabel");
+				const modalBody = document.querySelector(".modal-body");
+
+				// 상품후기 답변하기, 상품후기 답변수정 버튼태그 참조
+				const btnReplySave = document.querySelector("#btn_reply_save");
+				const btnReplyModify = document.querySelector("#btn_reply_modify");
+
+				// fetchAPI 이름의 사용자 정의함수 선언.
+				// fetch()함수가 스프링의 주소(url)을 요청후 응답받는 데이타는 포맷은 일반적으로는 json or text 로 받는다.
+				// /admin/review/review_info/${revCode}
+				const fetchAPI = (url, options = {}, responseType = 'json') => 
+					fetch(url, options).then(response => {
+						if (!response.ok) throw new Error("네트워크 응답 오류");
+						return responseType === 'json' ? response.json() : response.text();
+				});
+
+				// 모달 열기 이벤트. 답변하기 버튼을 클릭시 동작하는 이벤트 구문.
+				document.querySelectorAll("button[name='openModalBtn']").forEach(button => {
+					button.addEventListener("click", () => {
+						// 답변하기 버튼태그에 숨겨둔 상품후기 코드
+						const revCode = button.getAttribute("data-rev_code");
+
+						// fetchAPI 사용자정의 함수호출
+						fetchAPI(`/admin/review/review_info/${revCode}`)  // return response.json();
+							.then(data => {
+								modalTitle.textContent = `상품후기코드: ${revCode}`;
+								modalBody.innerHTML = `
+									<p><strong>상품후기내용:</strong> ${data.rev_content}</p>
+									<p><strong>평점:</strong> ${data.rev_rate}</p>
+									<p><strong>작성일:</strong> ${data.rev_date}</p>
+									<label>상품후기 답변:</label>
+									<input type="text" name="reply_content" id="reply_content">
+								`;
+
+								toggleButtons(true); // true 이면, 상품후기 답변버튼 보이고, 상품후기 수정버튼 숨기기
+
+								// 상품후기 답변저장버튼 클릭 이벤트설정
+								btnReplySave.onclick = () => handleReplySave(revCode);
+								// 모달대화상자 화면 띄우기(보이기)
+								modalInstance.show();
+							})
+							.catch(error => alert(`Failed to load review details: ${error.message}`));
+					});
+				});
+
+				// 답변 저장 처리.  handleReplySave 변수가 함수명으로 사용되어 호출되어진다.
+				const handleReplySave = (revCode) => {
+					
+					// 관리자가 상품후기 내용을 보고, 답변하는 내용
+					const replyContent = document.querySelector("#reply_content").value.trim();
+					
+					// 자바스크립트 변수가 조건식에서 사용시, 
+					// 값이 공백이거나 null 또는  값이 0 이외의 숫자이면 true 해석되고 그 반대면 false로 해석된다.  
+					if (!replyContent) return alert("상품후기 답변내용을 입력하세요");
+
+					fetchAPI(`/admin/review/reply_insert`, {
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({ reply_text: replyContent, rev_code: revCode })
+					}, 'text')  // return response.text();
+						.then(data => {  
+							//console.log("데이타", data);
+							if (data === "success") {
+								alert("상품후기 답변저장 성공.");
+								
+								// 모달대화상자 숨기기.
+								modalInstance.hide();
+								
+								// http://localhost:8888/admin/review/review_list?page=1&perPageNum=10&searchType=&keyword=&rev_rate=&rev_content=
+								criteriaForm.submit(); // <form id="criteriaForm">페이징,검색필드정보</form>
+							}
+						}) // 아래 문법은 예외가 발생시 예외처리 구문.
+						.catch(error => alert(`상품후기 답변저장시 에러발생: ${error.message}`));
+				};
+
+
+
+
+				
+
+				
+
+
+
+				
+
+				
+
+				// 버튼 표시 토글. 상품후기 답변버튼, 상품후기 수정버튼 표시제어
+				const toggleButtons = (isSaveVisible) => {
+					// 상품후기 답변버튼
+					btnReplySave.style.display = isSaveVisible ? 'inline-block' : 'none';
+					// 상품후기 수정버튼
+					btnReplyModify.style.display = isSaveVisible ? 'none' : 'inline-block';
+				};
+			});
+		</script>
 	</th:block>
 </html>

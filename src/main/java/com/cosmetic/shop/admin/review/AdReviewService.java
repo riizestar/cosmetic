@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import com.cosmetic.shop.common.utils.SearchCriteria;
+import com.cosmetic.shop.review.ReviewReply;
 import com.cosmetic.shop.review.ReviewVO;
 
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,10 @@ public class AdReviewService {
 	public int review_count(@Param("cri") SearchCriteria cri, @Param("rev_rate") String rev_rate,
 			@Param("rev_content") String rev_content) {
 		return adReviewMapper.review_count(cri, rev_rate, rev_content);
+	}
+	
+	public void reply_insert(ReviewReply vo) {
+		adReviewMapper.reply_insert(vo);
 	}
 	
 	

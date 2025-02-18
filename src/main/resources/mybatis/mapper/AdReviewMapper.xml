@@ -101,6 +101,15 @@
 		
 		</select>
 		
+		<insert id="reply_insert">
+		
+			insert into 
+				review_replies_tbl(rev_code,manager_id,reply_text)
+			values(#{rev_code}, #{manager_id}, #{reply_text})
+		
+		</insert>
+		
+		
 	
 	
 	
