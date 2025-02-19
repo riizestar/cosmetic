@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cosmetic.shop.admin.AdminDto;
 import com.cosmetic.shop.common.utils.FileUtils;
@@ -102,6 +103,35 @@ public class AdReviewController {
 		return entity;
 		
 	}
+	
+	// 답변하기 수정정보.  리턴되는 ReviewReply 객체가 JSON으로 변환하여, 클라이언트(fetch()함수)로 응답
+	@GetMapping("/reply_info/{reply_id}")// @PathVariable("reply_id"): URL 경로에서 변수 값을 메서드의 매개변수로 전달받기 위한
+	public ResponseEntity<ReviewReply> reply_info(@PathVariable("reply_id") Long reply_id) throws Exception {
+		
+		ResponseEntity<ReviewReply> entity = null;
+		
+		entity = new ResponseEntity<ReviewReply> (adReviewService.reply_info(reply_id), HttpStatus.OK);
+		
+		return entity;
+	}
+	
+	// 답변 수정정보 저장
+	@PostMapping(value = "/reply_modify", consumes = "application/json", produces = {MediaType.TEXT_PLAIN_VALUE})
+	public ResponseEntity<String> reply_modify(@RequestBody ReviewReply vo) throws Exception {
+		
+		log.info("답변정보: " + vo);
+		
+		ResponseEntity<String> entity = null;
+		
+		adReviewService.reply_modify(vo.getReply_id(), vo.getReply_text());
+		
+		entity = new ResponseEntity<String>("seccess", HttpStatus.OK);
+		
+		return entity;
+		
+	}
+	
+	
 
 	
 	

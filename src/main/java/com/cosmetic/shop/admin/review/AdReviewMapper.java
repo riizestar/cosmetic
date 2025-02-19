@@ -18,6 +18,10 @@ public interface AdReviewMapper {
 	
 	void reply_insert(ReviewReply vo);
 	
+	ReviewReply reply_info(Long reply_id);
+	
+	void reply_modify(@Param("reply_id") Long reply_id, @Param("reply_text") String reply_text);
+	
 	
 	
 	

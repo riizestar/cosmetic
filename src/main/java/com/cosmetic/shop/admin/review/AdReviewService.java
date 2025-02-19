@@ -31,6 +31,14 @@ public class AdReviewService {
 		adReviewMapper.reply_insert(vo);
 	}
 	
+	public ReviewReply reply_info(Long reply_id) {
+		return	adReviewMapper.reply_info(reply_id);
+	}
+	
+	public void reply_modify(Long reply_id, String reply_text) {
+		adReviewMapper.reply_modify(reply_id, reply_text);
+	}
+	
 	
 	
 	
