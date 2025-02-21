@@ -130,6 +130,15 @@
 		
 		</update>
 		
+		<delete id="reply_delete">
+		
+			delete from 
+				review_replies_tbl
+			where 
+				reply_id = #{reply_id}
+		
+		</delete>
+		
 		
 	
 	

@@ -22,7 +22,7 @@ public interface AdReviewMapper {
 	
 	void reply_modify(@Param("reply_id") Long reply_id, @Param("reply_text") String reply_text);
 	
-	
+	void reply_delete(Long reply_id);
 	
 	
 }

@@ -39,6 +39,17 @@ public class AdReviewService {
 		adReviewMapper.reply_modify(reply_id, reply_text);
 	}
 	
+	public void reply_delete(Long reply_id) {
+		adReviewMapper.reply_delete(reply_id);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

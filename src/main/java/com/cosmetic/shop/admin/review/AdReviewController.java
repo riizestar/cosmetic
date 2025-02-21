@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -92,6 +93,8 @@ public class AdReviewController {
 		
 		ResponseEntity<String> entity = null;
 		
+		log.info("상품후기답변: " + vo);
+		
 		// 관리자 아이디 저장.  AdminController 에서 참조.
 		AdminDto adminDto = ((AdminDto) session.getAttribute("admin_auth"));
 		vo.setManager_id(adminDto.getAd_userid());
@@ -125,10 +128,23 @@ public class AdReviewController {
 		
 		adReviewService.reply_modify(vo.getReply_id(), vo.getReply_text());
 		
-		entity = new ResponseEntity<String>("seccess", HttpStatus.OK);
+		entity = new ResponseEntity<String>("success", HttpStatus.OK);
 		
 		return entity;
 		
+	}
+	
+	// 답변 삭제
+	@DeleteMapping("/reply_delete/{reply_id}")
+	public ResponseEntity<String> reply_delete(@PathVariable("reply_id") Long reply_id) throws Exception{
+		
+		ResponseEntity<String> entity = null;
+		
+		adReviewService.reply_delete(reply_id);
+		
+		entity = new ResponseEntity<String>("success", HttpStatus.OK);
+		
+		return entity;
 	}
 	
 	
