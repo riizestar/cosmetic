@@ -39,7 +39,7 @@ public class OrderController {
 	// 상품이미지 관련작업기능
 	private final FileUtils fileUtils;
 		
-	@Value("${com.ezen.upload.path}")
+	@Value("${com.cosmetic.upload.path}")
 	private String uploadPath;
 	
 	// 1)장바구니에서 주문클릭

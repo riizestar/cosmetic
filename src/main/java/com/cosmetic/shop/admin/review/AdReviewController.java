@@ -41,7 +41,7 @@ public class AdReviewController {
 	// 상품이미지 관련작업기능
 	public final FileUtils fileUtils;
 	
-	@Value("${com.ezen.upload.path}")
+	@Value("${com.cosmetic.upload.path}")
 	private String uploadPath;
 	
 	@GetMapping("/image_display")

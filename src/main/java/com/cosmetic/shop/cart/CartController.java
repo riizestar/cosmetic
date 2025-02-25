@@ -30,7 +30,7 @@ public class CartController {
 	// 상품이미지 관련작업기능
 	private final FileUtils fileUtils;
 	
-	@Value("${com.ezen.upload.path}")
+	@Value("${com.cosmetic.upload.path}")
 	private String uploadPath;
 	
 	// 상품리스트 Cart버튼을 누르면 장바구니에 상품이 저장됨

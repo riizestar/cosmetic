@@ -42,10 +42,10 @@ public class AdProductController {
 	private final AdCategoryService adCategoryService;
 	
 	// application.properties 의존성 주입
-	@Value("${com.ezen.upload.path}")
+	@Value("${com.cosmetic.upload.path}")
 	private String uploadPath;
 	
-	@Value("${com.ezen.upload.ckeditor.path}")
+	@Value("${com.cosmetic.upload.ckeditor.path}")
 	private String uploadCKPath;
 	
 	// 상품이미지 관련작업기능

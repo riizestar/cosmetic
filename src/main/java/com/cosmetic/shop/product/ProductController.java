@@ -31,10 +31,10 @@ public class ProductController {
 	// 상품이미지 관련작업기능
 	private final FileUtils fileUtils;
 	
-	@Value("${com.ezen.upload.path}")
+	@Value("${com.cosmetic.upload.path}")
 	private String uploadPath;
 	
-	@Value("${com.ezen.upload.ckeditor.path}")
+	@Value("${com.cosmetic.upload.ckeditor.path}")
 	private String uploadCKPath;
 	
 	// 2차 카테고리에 따른 상품리스트는 페이징 사용, 검색기능은 미사용
